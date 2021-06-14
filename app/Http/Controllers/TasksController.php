@@ -12,11 +12,15 @@ use DB;
 use Carbon\Carbon;
 use DateTime;
 
+
 class TasksController extends Controller
 {
     public function index()
     {
-		
+	$user = Auth::id();	
+	
+	
+	
  
 $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
         $endDate = Carbon::createFromFormat('d/m/Y', '16/05/2021');
@@ -25,23 +29,34 @@ $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
 			
 		->join('users', 'tasks.User_id', '=', 'users.id')
 			->select('tasks.loss_Hour','users.name','tasks.created_at')
-                        ->whereDate('tasks.created_at', '=', $startDate)
+                        ->where('User_id', '=', $user)->whereDate('tasks.created_at', '=', $startDate)
               
                         
        ->orderBy("loss_Hour")->pluck("loss_Hour")->take(1);
   
        // print_r($users);
+	   
+	   $idle = DB::table('tasks')
+		//->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
+		->join('users', 'tasks.User_id', '=', 'users.id')
+	  
+		->select('tasks.*','users.name','tasks.created_at')->where('User_id', '=', $user)
+                        ->whereDate('tasks.created_at', '=', $startDate)
+                        
+        ->DATE_ADD('resumediff');
+		print_r($idle);
+	
 		$date_from= date('16-05-2021');
 		$date_to= date('16-05-2021');
 		$loss_hours = DB::table('tasks')
 			//->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
 		->join('users', 'tasks.User_id', '=', 'users.id')
 	 
-		->select('tasks.*','users.name')->whereBetween('Timestamp',[$date_from,$date_to])
+		->select('tasks.*','users.name')->where('User_id', '=', $user)->whereBetween('Timestamp',[$date_from,$date_to])
         ->get();
 		
 
-			$user = Auth::id();
+			
 		$auth =  DB::table('supervisors')
 		->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
      //->join('users', 'supervisors.User_id', '=', 'users.id')
@@ -65,7 +80,7 @@ $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
 		//->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
 		->join('users', 'tasks.User_id', '=', 'users.id')
 	 
-		->select('tasks.*','users.name')
+		->select('tasks.*','users.name')->where('User_id', '=', $user)
         ->sum('To_do_Time');
 		
 		// Available Hour
@@ -74,7 +89,7 @@ $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
 		//->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
 		->join('users', 'tasks.User_id', '=', 'users.id')
 	 
-		->select('tasks.*','users.name')->whereBetween('Timestamp', [$date_from, $date_to])
+		->select('tasks.*','users.name')->where('User_id', '=', $user)->whereBetween('Timestamp', [$date_from, $date_to])
         ->sum('loss_Hour');
 		$submitbtn =$available_hour + $assign_hour +$loss_hours;
 		 
@@ -106,7 +121,7 @@ $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
 			//->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
 		->join('users', 'tasks.User_id', '=', 'users.id')
 	   
-		->select('tasks.loss_Hour','users.name','tasks.created_at')
+		->select('tasks.loss_Hour','users.name','tasks.created_at')->where('User_id', '=', $user)
                         ->whereDate('tasks.created_at', '=', $startDate)
                         
           ->orderBy("loss_Hour")->pluck('loss_Hour')->take(1);
@@ -115,7 +130,7 @@ $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
 			//->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
 		->join('users', 'tasks.User_id', '=', 'users.id')
 	   
-		->select('tasks.loss_Hour','users.name','tasks.created_at')
+		->select('tasks.loss_Hour','users.name','tasks.created_at')->where('User_id', '=', $user)
                         ->whereDate('tasks.created_at', '=', $startDate)
                         
           ->orderBy("loss_Hour")->sum("loss_Hour");
@@ -126,7 +141,7 @@ $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
 		//->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
 		->join('users', 'tasks.User_id', '=', 'users.id')
 	 
-		->select('tasks.*','users.name','tasks.created_at')
+		->select('tasks.*','users.name','tasks.created_at')->where('User_id', '=', $user)
                         ->whereDate('tasks.created_at', '=', $startDate)
                         
         ->sum('To_do_Time');
@@ -153,7 +168,7 @@ $hours = floor($minutes / 60).':'.($minutes -   floor($minutes / 60) * 60);
 		//->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
 		->join('users', 'tasks.User_id', '=', 'users.id')
 	  
-		->select('tasks.*','users.name','tasks.created_at')
+		->select('tasks.*','users.name','tasks.created_at')->where('User_id', '=', $user)
                         ->whereDate('tasks.created_at', '=', $startDate)
                         
         ->sum('Entry_time');
@@ -161,7 +176,7 @@ $hours = floor($minutes / 60).':'.($minutes -   floor($minutes / 60) * 60);
 		//->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
 		->join('users', 'tasks.User_id', '=', 'users.id')
 	  
-		->select('tasks.*','users.name','tasks.created_at')
+		->select('tasks.*','users.name','tasks.created_at')->where('User_id', '=', $user)
                         ->whereDate('tasks.created_at', '=', $startDate)
                         
         ->sum('resumediff');
