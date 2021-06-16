@@ -106,8 +106,19 @@
 
 
                     <td>
+                      <?php $status = isset($tstatus[$task->status])?$tstatus[$task->status]:'-';?>
 
-                        @if( $task->Start_Date == 0 )
+                        @if( $task->status == 1 )
+                            <div class="badge badge-light-warning fw-bolder px-4 py-3">{{$status}}</div>
+                        @elseif( $task->status == 2 )
+                            <div class="badge badge-light-info fw-bolder px-4 py-3"> {{$status}}</div>
+                        @elseif( $task->status == 3)
+                            <div class="badge badge-light-danger fw-bolder px-4 py-3"> {{$status}}</div>
+                        @else
+                            <div class="badge badge-light-success fw-bolder px-4 py-3">{{$status}}</div>
+                        @endif
+
+                        {{--@if( $task->Start_Date == 0 )
                             <div class="badge badge-light-warning fw-bolder px-4 py-3"> Pending</div>
                         @elseif( $task->Start_Date != 0 && $task->Paused_Date == 0 )
 
@@ -119,7 +130,7 @@
                             <div class="badge badge-light-info fw-bolder px-4 py-3"> Progress</div>
                         @elseif( $task->Start_Date !=  0 && $task->Paused_Date != 0 && $task->Resume_Date != 0  && $task->Complete_Date != 0 )
                             <div class="badge badge-light-success fw-bolder px-4 py-3">Completed</div>
-                        @endif
+                        @endif--}}
 
 
                     </td>

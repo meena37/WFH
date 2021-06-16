@@ -14,9 +14,10 @@
 
   class TasksController extends Controller
   {
+
     public function index()
     {
-
+      global $task_status;
 
       $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
       $endDate = Carbon::createFromFormat('d/m/Y', '16/05/2021');
@@ -150,7 +151,7 @@
         $submitbtn = $assign_hour + $loss_hours + $Entry_time;
 
 
-        return view('tasks.index', ['submitbtn' => $submitbtn, 'tasks' => $tasks, 'auth' => $auth, 'loss_hour' => $loss_hour, 'nassigntime' => $nassigntime, 'available_hour' => $available_hour, 'Entry_time' => $Entry_time, 'idle' => $idle]);
+        return view('tasks.index', ['submitbtn' => $submitbtn, 'tasks' => $tasks, 'auth' => $auth, 'loss_hour' => $loss_hour, 'nassigntime' => $nassigntime, 'available_hour' => $available_hour, 'Entry_time' => $Entry_time, 'idle' => $idle, 'tstatus' => $task_status]);
       } else {
 
         echo "test";
@@ -208,6 +209,7 @@
         $loss_Hour = $end->diff($start),
         'loss_Hour' => $loss_Hour->format('%H:%I:%S'),
 
+        'status' => 1,
         'Timestamp' => $request->get('Timestamp'),
         'Task_type_id' => $request->get('Task_type_id'),
         'Task_Shift_id' => $request->get('Task_Shift_id'),
@@ -256,6 +258,8 @@
      */
     public function edit(Request $request, Task $task)
     {
+      global $task_status;
+
       $user = Auth::id();
       $auth = DB::table('supervisors')
         ->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
@@ -263,8 +267,7 @@
         ->select('supervisors.Supervisor_id')
         ->value('Supervisor_id');
 
-
-      return view('tasks.edit', ['task' => $task, 'auth' => $auth]);
+      return view('tasks.edit', ['task' => $task, 'auth' => $auth, 'task_status' => $task_status]);
     }
 
     /**
@@ -276,15 +279,37 @@
      */
     public function update(Request $request, Task $task)
     {
-      request()->validate([
+      $request_all = $request->all();
+      $from_status = $task->status;
+      $to_status = $request_all['status'];
 
+      $current_date_time = Carbon::now()->toDateTimeString();
+
+      // Changed to In progress
+      if($to_status == 2 && $request_all['Start_Date'] == ''){
+        $request_all['Start_Date'] = $current_date_time;
+      }
+
+
+      request()->validate([
         'Proposed_Date' => '',
         'Proposed_Time' => '',
         'Plan' => '',
         'User_id' => '',
         'Supervisor_id' => '',
       ]);
-      $task->update($request->all());
+      $task->update($request_all);
+
+      // Task status history
+      $data = [
+        'task_id' => $task->id,
+        'from_status' => $from_status,
+        'to_status' => $to_status,
+        'created_at' => $current_date_time,
+        'updated_at' => $current_date_time,
+      ];
+
+      DB::table('task_status_history')->insert($data);
 
       return redirect()->route('tasks.index')
         ->with('success', 'Work updated successfully');
