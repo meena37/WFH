@@ -75,7 +75,11 @@
       // print_r($submitbtn);
 
       if ($user == $user) {
-
+        //start call task table and shift table 
+		$tasktype = DB::table('tasktypes')->get();
+        $shift = DB::table('shifts')->get();
+		
+		// End 
         $tasks = DB::table('tasks')
           //->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
           ->join('users', 'tasks.User_id', '=', 'users.id')
@@ -198,7 +202,7 @@
 
         $submitbtn = $assign_hour + $loss_hours + $Entry_time;
 
-        return view('tasks.index', ['submitbtn' => $submitbtn, 'tasks' => $tasks, 'auth' => $auth, 'loss_hour' => $loss_hour, 'nassigntime' => $nassigntime, 'available_hour' => $available_hour, 'Entry_time' => $Entry_time, 'idle' => $idle, 'tstatus' => $task_status]);
+        return view('tasks.index', ['submitbtn' => $submitbtn, 'tasks' => $tasks, 'auth' => $auth, 'loss_hour' => $loss_hour, 'nassigntime' => $nassigntime, 'available_hour' => $available_hour, 'Entry_time' => $Entry_time, 'idle' => $idle, 'tstatus' => $task_status,'tasktype' => $tasktype, 'shift' => $shift]);
       } else {
 
         echo "test";
