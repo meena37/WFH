@@ -3,7 +3,7 @@
     	@csrf
 
 
-<div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+											<div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
 												<!--begin:Form-->
 												 
 													<!--begin::Heading-->
@@ -18,8 +18,7 @@
 														</label>
 														<!--end::Label-->
 														<input type="text" class="form-control form-control-solid" placeholder="Enter Timestamp" value="<?php date_default_timezone_set('Asia/Kathmandu');
-$date = date('Y-m-d H:i:s');
-echo $date;?>" name="Timestamp">
+														$date = date('Y-m-d H:i:s'); echo $date;?>" name="Timestamp">
 													<div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
@@ -59,7 +58,8 @@ echo $date;?>" name="Timestamp">
 																	  {{ $item->Task_Shift }} 
 																  </option>
 															  @endforeach
-														 </select><div class="fv-plugins-message-container"></div>
+														 </select>
+														 <div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
 													<!--begin::Input group-->
@@ -110,7 +110,7 @@ echo $date;?>" name="Timestamp">
 													<div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
-													<!--begin::Input group-->
+													 
 													<!--begin::Input group-->
 													<div class="d-flex flex-column mb-8 fv-row fv-plugins-icon-container">
 														<!--begin::Label-->
@@ -120,10 +120,10 @@ echo $date;?>" name="Timestamp">
 														</label>
 														<!--end::Label-->
 														<input type="Date" class="form-control form-control-solid" placeholder="Enter Proposed Date " name="Proposed_Date" value="<?php echo date('Y-m-d'); ?>" required>
-													<div class="fv-plugins-message-container"></div>
+														<div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
-													<!--end::Input group-->
+													 
 													<!--begin::Input group-->
 													<div class="d-flex flex-column mb-8 fv-row fv-plugins-icon-container">
 														<!--begin::Label-->
@@ -133,7 +133,7 @@ echo $date;?>" name="Timestamp">
 														</label>
 														<!--end::Label-->
 														<input type="Time"  min="9:40" max="18:00"class="form-control form-control-solid" placeholder="Enter Proposed_Time" name="Proposed_Time" required>
-													<div class="fv-plugins-message-container"></div>
+														<div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
 													
@@ -142,10 +142,10 @@ echo $date;?>" name="Timestamp">
 											</div>
         
 		  
-		    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-		            <button type="submit" class="btn btn-primary">Submit</button>
-		    </div>
-		
+											<div class="col-xs-12 col-sm-12 col-md-12 text-center">
+													<button type="submit" class="btn btn-primary">Submit</button>
+											</div>
+										
 
 
     
