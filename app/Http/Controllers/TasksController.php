@@ -141,15 +141,62 @@
           ->select('tasks.*', 'users.name', 'tasks.created_at')
           ->whereDate('tasks.created_at', '=', $startDate)
           ->sum('Entry_time');
-        $idle = DB::table('tasks')
+        /*$idle = DB::table('tasks')
           //->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
           ->join('users', 'tasks.User_id', '=', 'users.id')
           ->select('tasks.*', 'users.name', 'tasks.created_at')
           ->whereDate('tasks.created_at', '=', $startDate)
-          ->sum('resumediff');
+          ->sum('resumediff');*/
+
+        // Idle Time
+        $start_date = date('Y-m-d' . ' 10:00:00', time());
+        $end_date = date('Y-m-d' . ' 18:00:00', time());
+
+        $task_history = DB::table('task_status_history')
+          ->select('from_status', 'to_status', 'created_at')
+          ->whereBetween('created_at', [$start_date, $end_date])
+          ->get();
+
+        $paused_times = [];
+        $resumed_times = [];
+        foreach ($task_history as $item) {
+          $from_status = $item->from_status;
+          $to_status = $item->to_status;
+          $created_at = $item->created_at;
+
+          if ($from_status == 2 && $to_status == 3) {
+            $paused_times[] = $created_at;
+          } else if ($from_status == 3 && $to_status == 2) {
+            $resumed_times[] = $created_at;
+          }
+        }
+
+        $idle = '';
+        $old_time = '';
+        $idel_times = [];
+        if (!empty($resumed_times)) {
+          $count = count($resumed_times);
+          for ($i = 0; $i < $count; $i++) {
+            $startTime = Carbon::parse($paused_times[$i]);
+            $endTime = Carbon::parse($resumed_times[$i]);
+
+            $time = $startTime->diff($endTime)->format('%H:%I:%S');
+            $idel_times[] = $time;
+
+            if ($i > 0) {
+              $time1 = $time;
+              $time2 = $old_time;
+
+              $old_time = $this->addTwoTimes($time1, $time2);
+            } else {
+              $old_time = $time;
+            }
+
+            $idle = $old_time;
+          }
+        }
 
         $submitbtn = $assign_hour + $loss_hours + $Entry_time;
-
 
         return view('tasks.index', ['submitbtn' => $submitbtn, 'tasks' => $tasks, 'auth' => $auth, 'loss_hour' => $loss_hour, 'nassigntime' => $nassigntime, 'available_hour' => $available_hour, 'Entry_time' => $Entry_time, 'idle' => $idle, 'tstatus' => $task_status]);
       } else {
@@ -286,10 +333,14 @@
       $current_date_time = Carbon::now()->toDateTimeString();
 
       // Changed to In progress
-      if($to_status == 2 && $request_all['Start_Date'] == ''){
+      if ($to_status == 2 && $request_all['Start_Date'] == '') {
         $request_all['Start_Date'] = $current_date_time;
       }
 
+      // Changed to In Verified/Complete
+      if ($to_status == 4 && $request_all['Complete_Date'] == '') {
+        $request_all['Complete_Date'] = $current_date_time;
+      }
 
       request()->validate([
         'Proposed_Date' => '',
@@ -327,5 +378,35 @@
 
       return redirect()->route('tasks.index')
         ->with('success', 'Work deleted successfully');
+    }
+
+    /**
+     * Add two times
+     * @param string $time1
+     * @param string $time2
+     * @return false|string
+     */
+    public function addTwoTimes($time1 = "00:00:00", $time2 = "00:00:00")
+    {
+      $time2_arr = [];
+      $time1 = $time1;
+      $time2_arr = explode(":", $time2);
+      //Hour
+      if (isset($time2_arr[0]) && $time2_arr[0] != "") {
+        $time1 = $time1 . " +" . $time2_arr[0] . " hours";
+        $time1 = date("H:i:s", strtotime($time1));
+      }
+      //Minutes
+      if (isset($time2_arr[1]) && $time2_arr[1] != "") {
+        $time1 = $time1 . " +" . $time2_arr[1] . " minutes";
+        $time1 = date("H:i:s", strtotime($time1));
+      }
+      //Seconds
+      if (isset($time2_arr[2]) && $time2_arr[2] != "") {
+        $time1 = $time1 . " +" . $time2_arr[2] . " seconds";
+        $time1 = date("H:i:s", strtotime($time1));
+      }
+
+      return date("H:i:s", strtotime($time1));
     }
   }

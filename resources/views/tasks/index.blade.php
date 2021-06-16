@@ -106,7 +106,7 @@
 
 
                     <td>
-                      <?php $status = isset($tstatus[$task->status])?$tstatus[$task->status]:'-';?>
+                      <?php $status = isset($tstatus[$task->status]) ? $tstatus[$task->status] : '-';?>
 
                         @if( $task->status == 1 )
                             <div class="badge badge-light-warning fw-bolder px-4 py-3">{{$status}}</div>

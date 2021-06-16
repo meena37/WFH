@@ -133,11 +133,13 @@ use Carbon\carbon;?>
                     <div class="btn-group w-100" data-kt-buttons="true" data-kt-buttons-target="[data-kt-button]">
                         <!--begin::Radio-->
                       <?php foreach ($task_status as $key => $var){?>
-                        <label class="btn btn-outline-secondary text-gray-400 text-hover-white text-active-white btn-outline btn-active-success <?php echo ($task->status == $key) ? 'active' : '';?>"
+                        <label class="btn btn-outline-secondary text-gray-400 text-hover-white text-active-white btn-outline btn-active-success
+                        <?php echo ($task->status == $key) ? 'active' : '';?>
+                        <?php echo ($task->Start_Date != '' && $key == 1) ? 'disabled' : '';?>"
                                data-kt-button="true">
                             <!--begin::Input-->
                             <input class="btn-check" type="radio" name="status"
-                                   value="<?php echo $key;?>" <?php echo ($task->status == $key) ? 'checked' : '';?>>
+                                   value="<?php echo $key;?>" <?php echo ($task->status == $key) ? 'checked' : '';?> <?php echo ($task->Start_Date != '' && $key == 1) ? 'disabled' : '';?>>
                             <!--end::Input-->
                           <?php echo $var;?>
                         </label>
