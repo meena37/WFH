@@ -95,12 +95,29 @@
         $date_to = date('Y-m-d 18:00:00');
         // loss  hours
 
+        $start_date = date('Y-m-d' . ' 09:00:00', time());
+        $end_date = date('Y-m-d' . ' 18:00:00', time());
+
         $loss_hour = DB::table('tasks')
           //->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
           ->join('users', 'tasks.User_id', '=', 'users.id')
           ->select('tasks.loss_Hour', 'users.name', 'tasks.created_at')
           ->whereDate('tasks.created_at', '=', $startDate)
           ->orderBy("loss_Hour")->pluck('loss_Hour')->take(1);
+
+        // Tasks which are never started
+        $rem_min = DB::table('tasks')
+          ->select('Time_acc_to_task')
+          ->whereNull('Complete_Date')
+          //->whereNull('Start_Date')
+          ->whereBetween('created_at', [$start_date, $end_date])
+          ->sum("Time_acc_to_task");
+
+        $rem_hrs = intdiv($rem_min, 60).':'. ($rem_min % 60).':00';
+
+        /*echo '<pre>';print_r($loss_hour);echo '</pre>';
+        echo '<pre>';print_r($rem_hrs);echo '</pre>';die;*/
+        $total_loss_hour = $loss_hour;//$this->addTwoTimes($loss_hour, $rem_hrs);
 
         $loss_hours = DB::table('tasks')
           //->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
@@ -149,14 +166,12 @@
           ->sum('resumediff');*/
 
         // Idle Time
-        $start_date = date('Y-m-d' . ' 10:00:00', time());
-        $end_date = date('Y-m-d' . ' 18:00:00', time());
-
         $task_history = DB::table('task_status_history')
-          ->select('from_status', 'to_status', 'created_at')
+          ->select('task_id', 'from_status', 'to_status', 'created_at')
           ->whereBetween('created_at', [$start_date, $end_date])
           ->get();
-
+        
+        
         $paused_times = [];
         $resumed_times = [];
         foreach ($task_history as $item) {
@@ -165,20 +180,24 @@
           $created_at = $item->created_at;
 
           if ($from_status == 2 && $to_status == 3) {
-            $paused_times[] = $created_at;
+            $paused_times[$item->task_id][] = $created_at;// .'---'.$item->task_id;
           } else if ($from_status == 3 && $to_status == 2) {
-            $resumed_times[] = $created_at;
+            $resumed_times[$item->task_id][] = $created_at;// .'---'.$item->task_id;
           }
         }
+        
+        /*echo 'Paused <pre>';print_r($paused_times);echo '</pre>';
+        echo 'Resumed <pre>';print_r($resumed_times);echo '</pre>';*/
 
         $idle = '';
         $old_time = '';
         $idel_times = [];
-        if (!empty($resumed_times)) {
-          $count = count($resumed_times);
+        foreach ($resumed_times as $task_id => $resumed_time){
+          $count = count($resumed_time);
+
           for ($i = 0; $i < $count; $i++) {
-            $startTime = Carbon::parse($paused_times[$i]);
-            $endTime = Carbon::parse($resumed_times[$i]);
+            $startTime = Carbon::parse($paused_times[$task_id][$i]);
+            $endTime = Carbon::parse($resumed_time[$i]);
 
             $time = $startTime->diff($endTime)->format('%H:%I:%S');
             $idel_times[] = $time;
@@ -188,6 +207,7 @@
               $time2 = $old_time;
 
               $old_time = $this->addTwoTimes($time1, $time2);
+
             } else {
               $old_time = $time;
             }
@@ -196,9 +216,19 @@
           }
         }
 
+        $idle = '';
+        foreach ($idel_times as $key => $item){
+          if($key == 0){
+            $idle = $item;
+          }
+          if(isset($idel_times[$key + 1])){
+            $idle = $this->addTwoTimes($idle, $idel_times[$key + 1]);
+          }
+        }
+
         $submitbtn = $assign_hour + $loss_hours + $Entry_time;
 
-        return view('tasks.index', ['submitbtn' => $submitbtn, 'tasks' => $tasks, 'auth' => $auth, 'loss_hour' => $loss_hour, 'nassigntime' => $nassigntime, 'available_hour' => $available_hour, 'Entry_time' => $Entry_time, 'idle' => $idle, 'tstatus' => $task_status]);
+        return view('tasks.index', ['submitbtn' => $submitbtn, 'tasks' => $tasks, 'auth' => $auth, 'loss_hour' => $total_loss_hour, 'nassigntime' => $nassigntime, 'available_hour' => $available_hour, 'Entry_time' => $Entry_time, 'idle' => $idle, 'tstatus' => $task_status]);
       } else {
 
         echo "test";
