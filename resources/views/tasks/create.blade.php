@@ -1,35 +1,9 @@
-@extends('layouts.app')
-
-
-@section('content')
-    <div class="scroll-y px-10 px-lg-15 pt-0 pb-15">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left"><br/>
-                <h2>Add New Task</h2>
-            </div>
-            <div class="pull-right">
-                <!--a class="btn btn-sm btn-primary" href="{{ route('worklist.index') }}"> Back</a-->
-            </div>
-        </div>
-    </div>
-
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-
-    <form action="{{ route('tasks.store') }}" method="POST">
+ 
+     
     	@csrf
 
-<div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+
+											<div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
 												<!--begin:Form-->
 												 
 													<!--begin::Heading-->
@@ -44,8 +18,7 @@
 														</label>
 														<!--end::Label-->
 														<input type="text" class="form-control form-control-solid" placeholder="Enter Timestamp" value="<?php date_default_timezone_set('Asia/Kathmandu');
-$date = date('Y-m-d H:i:s');
-echo $date;?>" name="Timestamp">
+														$date = date('Y-m-d H:i:s'); echo $date;?>" name="Timestamp">
 													<div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
@@ -85,7 +58,8 @@ echo $date;?>" name="Timestamp">
 																	  {{ $item->Task_Shift }} 
 																  </option>
 															  @endforeach
-														 </select><div class="fv-plugins-message-container"></div>
+														 </select>
+														 <div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
 													<!--begin::Input group-->
@@ -96,7 +70,7 @@ echo $date;?>" name="Timestamp">
 															<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="Specify a target name for future usage and reference" aria-label="Specify a target name for future usage and reference"></i>
 														</label>
 														<!--end::Label-->
-														<input type="text" class="form-control form-control-solid" placeholder="Enter Task Title" name="Task_Title">
+														<input type="text" class="form-control form-control-solid" placeholder="Enter Task Title" name="Task_Title" required>
 													<div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
@@ -108,7 +82,7 @@ echo $date;?>" name="Timestamp">
 															<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="Specify a target name for future usage and reference" aria-label="Specify a target name for future usage and reference"></i>
 														</label>
 														<!--end::Label-->
-														<input type="text" class="form-control form-control-solid" placeholder="Enter Task Details" name="Task_Details">
+														<input type="text" class="form-control form-control-solid" placeholder="Enter Task Details" name="Task_Details" required>
 													<div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
@@ -120,7 +94,7 @@ echo $date;?>" name="Timestamp">
 															<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="Specify a target name for future usage and reference" aria-label="Specify a target name for future usage and reference"></i>
 														</label>
 														<!--end::Label-->
-														<input type="text" class="form-control form-control-solid" placeholder="Enter QTY" name="Task_QTY">
+														<input type="text" class="form-control form-control-solid" placeholder="Enter QTY" name="Task_QTY" required>
 													<div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
@@ -132,11 +106,11 @@ echo $date;?>" name="Timestamp">
 															<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="Specify a target name for future usage and reference" aria-label="Specify a target name for future usage and reference"></i>
 														</label>
 														<!--end::Label-->
-														<input type="text" class="form-control form-control-solid" placeholder="Enter Time in minute " name="Time_acc_to_task">
+														<input type="text" class="form-control form-control-solid" placeholder="Enter Time in minute " name="Time_acc_to_task" required>
 													<div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
-													<!--begin::Input group-->
+													 
 													<!--begin::Input group-->
 													<div class="d-flex flex-column mb-8 fv-row fv-plugins-icon-container">
 														<!--begin::Label-->
@@ -145,11 +119,11 @@ echo $date;?>" name="Timestamp">
 															<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="Specify a target name for future usage and reference" aria-label="Specify a target name for future usage and reference"></i>
 														</label>
 														<!--end::Label-->
-														<input type="Date" class="form-control form-control-solid" placeholder="Enter Proposed Date " name="Proposed_Date" value="<?php echo date('Y-m-d'); ?>">
-													<div class="fv-plugins-message-container"></div>
+														<input type="Date" class="form-control form-control-solid" placeholder="Enter Proposed Date " name="Proposed_Date" value="<?php echo date('Y-m-d'); ?>" required>
+														<div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
-													<!--end::Input group-->
+													 
 													<!--begin::Input group-->
 													<div class="d-flex flex-column mb-8 fv-row fv-plugins-icon-container">
 														<!--begin::Label-->
@@ -158,8 +132,8 @@ echo $date;?>" name="Timestamp">
 															<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="Specify a target name for future usage and reference" aria-label="Specify a target name for future usage and reference"></i>
 														</label>
 														<!--end::Label-->
-														<input type="Time"  min="10:00" max="18:00"class="form-control form-control-solid" placeholder="Enter Proposed_Time" name="Proposed_Time">
-													<div class="fv-plugins-message-container"></div>
+														<input type="Time"  min="9:40" max="18:00"class="form-control form-control-solid" placeholder="Enter Proposed_Time" name="Proposed_Time" required>
+														<div class="fv-plugins-message-container"></div>
 													</div>
 													<!--end::Input group-->
 													
@@ -168,14 +142,10 @@ echo $date;?>" name="Timestamp">
 											</div>
         
 		  
-		    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-		            <button type="submit" class="btn btn-primary">Submit</button>
-		    </div>
-		
+											<div class="col-xs-12 col-sm-12 col-md-12 text-center">
+													<button type="submit" class="btn btn-primary">Submit</button>
+											</div>
+										
 
 
-    </form>
-
-
-
-@endsection
+    

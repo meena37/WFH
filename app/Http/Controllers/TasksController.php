@@ -75,7 +75,11 @@
       // print_r($submitbtn);
 
       if ($user == $user) {
+        //start call task table and shift table
+		$tasktype = DB::table('tasktypes')->get();
+        $shift = DB::table('shifts')->get();
 
+		// End
         $tasks = DB::table('tasks')
           //->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
           ->join('users', 'tasks.User_id', '=', 'users.id')
@@ -170,8 +174,8 @@
           ->select('task_id', 'from_status', 'to_status', 'created_at')
           ->whereBetween('created_at', [$start_date, $end_date])
           ->get();
-        
-        
+
+
         $paused_times = [];
         $resumed_times = [];
         foreach ($task_history as $item) {
@@ -185,7 +189,7 @@
             $resumed_times[$item->task_id][] = $created_at;// .'---'.$item->task_id;
           }
         }
-        
+
         /*echo 'Paused <pre>';print_r($paused_times);echo '</pre>';
         echo 'Resumed <pre>';print_r($resumed_times);echo '</pre>';*/
 
@@ -228,7 +232,7 @@
 
         $submitbtn = $assign_hour + $loss_hours + $Entry_time;
 
-        return view('tasks.index', ['submitbtn' => $submitbtn, 'tasks' => $tasks, 'auth' => $auth, 'loss_hour' => $total_loss_hour, 'nassigntime' => $nassigntime, 'available_hour' => $available_hour, 'Entry_time' => $Entry_time, 'idle' => $idle, 'tstatus' => $task_status]);
+        return view('tasks.index', ['submitbtn' => $submitbtn, 'tasks' => $tasks, 'auth' => $auth, 'loss_hour' => $total_loss_hour, 'nassigntime' => $nassigntime, 'available_hour' => $available_hour, 'Entry_time' => $Entry_time, 'idle' => $idle, 'tstatus' => $task_status,'tasktype' => $tasktype, 'shift' => $shift]);
       } else {
 
         echo "test";
