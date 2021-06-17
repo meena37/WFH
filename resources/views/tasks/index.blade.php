@@ -9,55 +9,62 @@
             </div>
             <div class="pull-right">
                 @if($submitbtn <= 7.2)
-                    <a class="btn btn-sm btn-primary" href="{{ route('tasks.create') }}" data-bs-toggle="modal" data-bs-target="#add-contact"> New Task</a>
+                    <a class="btn btn-sm btn-primary" href="{{ route('tasks.create') }}" data-bs-toggle="modal"
+                       data-bs-target="#add-contact"> New Task</a>
 
                 @else
-                    <a class="btn btn-sm btn-primary" href="{{ route('tasks.create') }}" data-bs-toggle="modal" data-bs-target="#add-contact"> New Task</a>
+                    <a class="btn btn-sm btn-primary" href="{{ route('tasks.create') }}" data-bs-toggle="modal"
+                       data-bs-target="#add-contact"> New Task</a>
                     <!--a class="btn btn-sm btn-warning" >InActive</a-->
                 @endif
 
             </div>
         </div>
     </div>
-<!-- Add  Popup Model -->
-        <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
+    <!-- Add  Popup Model -->
+    <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">Add New Task</h4>
-                        <!--begin::Close-->
-						<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-							<!--begin::Svg Icon | path: icons/stockholm/Navigation/Close.svg-->
-								<span class="svg-icon svg-icon-1">
-									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-										<g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
-											<rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
-											<rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <!--begin::Svg Icon | path: icons/stockholm/Navigation/Close.svg-->
+                        <span class="svg-icon svg-icon-1">
+									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                         width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+										<g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)"
+                                           fill="#000000">
+											<rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"/>
+											<rect fill="#000000" opacity="0.5"
+                                                  transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)"
+                                                  x="0" y="7" width="16" height="2" rx="1"/>
 										</g>
 									</svg>
 								</span>
-													<!--end::Svg Icon-->
-						</div>
-												<!--end::Close-->
-                     </div>
-                    <div class="modal-body">
-					{!! Form::open(['route' => ['tasks.store'],'class'=>'form-horizontal', ]) !!}
-					 @include('tasks.create')
+                        <!--end::Svg Icon-->
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <div class="modal-body">
+                {!! Form::open(['route' => ['tasks.store'],'class'=>'form-horizontal', ]) !!}
+                @include('tasks.create')
                 <!-- Submit Form Button -->
-					<div class="modal-footer">
-					 
-					</div> 
-					{!! Form::close() !!}
-                        
-                    
-					</div>
-             <!-- /.modal-content -->
-			</div>
-    <!-- /.modal-dialog -->
-		</div>   
-	 </div>   
-    
- <!-- end  Popup Model -->
+                    <div class="modal-footer">
+
+                    </div>
+                    {!! Form::close() !!}
+
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    </div>
+
+    <!-- end  Popup Model -->
 
 
     @if ($message = Session::get('success'))
@@ -108,7 +115,7 @@
                 <th>Proposed Time</th>
                 <th>Plan</th>
 
-                <th width="280px">Action</th>
+                <th width="280px">Status</th>
             </tr>
             </thead>
             <!--end::Table head-->

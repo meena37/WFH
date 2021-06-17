@@ -35,7 +35,7 @@ use Carbon\carbon;?>
         <div class="scroll-y px-10 px-lg-15 pt-0 pb-15">
 
             <!--begin::Input group--><?php $user = Auth::id();?> @if ( $user == $auth)
-                <div class="d-flex flex-column mb-8 fv-row fv-plugins-icon-container">
+                <div class="d-flex flex-column mb-8 fv-row fv-plugins-icon-container" style="display: none !important;">
                     <label class=" fs-6 fw-bold mb-2">Verified by Head</label>
                     <select class="form-select form-select-solid select2-hidden-accessible" data-control="select2"
                             data-hide-search="true" data-placeholder="Select Option" name="Verified_head"
@@ -132,14 +132,21 @@ use Carbon\carbon;?>
                     <!--begin::Radio group-->
                     <div class="btn-group w-100" data-kt-buttons="true" data-kt-buttons-target="[data-kt-button]">
                         <!--begin::Radio-->
-                      <?php foreach ($task_status as $key => $var){?>
+                      <?php foreach ($tstatus as $key => $var){?>
+                      <?php
+                      if (!$is_supervisor && $key == 5) {
+                        continue;
+                      }
+                      ?>
+
                         <label class="btn btn-outline-secondary text-gray-400 text-hover-white text-active-white btn-outline btn-active-success
                         <?php echo ($task->status == $key) ? 'active' : '';?>
-                        <?php echo ($task->Start_Date != '' && $key == 1) ? 'disabled' : '';?>"
+                        <?php echo ($task->Start_Date != '' && $key == 1) ? 'disabled' : '';?> <?php echo ($task->status >= 4 && $key < 4)? 'disabled':'';?>"
                                data-kt-button="true">
                             <!--begin::Input-->
                             <input class="btn-check" type="radio" name="status"
-                                   value="<?php echo $key;?>" <?php echo ($task->status == $key) ? 'checked' : '';?> <?php echo ($task->Start_Date != '' && $key == 1) ? 'disabled' : '';?>>
+                                   value="<?php echo $key;?>" <?php echo ($task->status == $key) ? 'checked' : '';?> <?php echo ($task->Start_Date != '' && $key == 1) ? 'disabled' : '';?>
+                                <?php echo ($task->status >= 4 && $key < 4)? 'disabled':'';?>>
                             <!--end::Input-->
                           <?php echo $var;?>
                         </label>
