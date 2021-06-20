@@ -134,7 +134,7 @@ use Carbon\carbon;?>
                         <!--begin::Radio-->
                       <?php foreach ($tstatus as $key => $var){?>
                       <?php
-                      if (!$is_supervisor && $key == 5) {
+                      if (!$is_supervisor && ($key == 5 || $key == 6)) {
                         continue;
                       }
                       ?>

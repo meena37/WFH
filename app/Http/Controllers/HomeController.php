@@ -73,7 +73,10 @@
           ->join('users', 'tasks.User_id', '=', 'users.id')
           ->join('shifts', 'tasks.Task_Shift_id', '=', 'shifts.id')
           ->join('tasktypes', 'tasks.Task_type_id', '=', 'tasktypes.id')
-          ->where('tasks.status', 5)
+          ->where(function($query) {
+            $query->orWhere('tasks.status', 5)
+              ->orWhere('tasks.status', 6);
+          })
           ->select('tasks.*', 'users.name', 'shifts.Task_Shift', 'tasktypes.Task_type')->where('User_id', '=', $user)
           ->whereNotNull('Start_Date')->whereNotNull('Complete_Date')
           ->orderBy('id', 'DESC')

@@ -23,7 +23,8 @@
         2 => 'In Progress',
         3 => 'Paused',
         4 => 'Verify',
-        5 => 'Done',
+        5 => 'Partially Done',
+        6 => 'Done',
       ];
     }
 

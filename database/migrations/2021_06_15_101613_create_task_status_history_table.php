@@ -16,6 +16,7 @@
       Schema::create('task_status_history', function (Blueprint $table) {
         $table->bigIncrements('id');
         $table->bigInteger('task_id')->default(0);
+        $table->bigInteger('user_id')->default(0);
         $table->tinyInteger('from_status')->default(0);
         $table->tinyInteger('to_status')->default(0);
         $table->timestamps();

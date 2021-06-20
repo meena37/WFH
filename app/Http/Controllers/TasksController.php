@@ -11,6 +11,7 @@
   use DB;
   use Carbon\Carbon;
   use DateTime;
+  use Illuminate\Support\Facades\Mail;
 
   class TasksController extends Controller
   {
@@ -357,9 +358,9 @@
         ->get();
 
       $is_supervisor = FALSE;
-      if(!empty($supervisor_data)){
+      if (!empty($supervisor_data)) {
         foreach ($supervisor_data as $supervisor_datum) {
-          if($supervisor_datum->Supervisor_id == $user){
+          if ($supervisor_datum->Supervisor_id == $user) {
             $is_supervisor = TRUE;
           }
         }
@@ -378,6 +379,7 @@
      */
     public function update(Request $request, Task $task)
     {
+      $current_user = Auth::id();
       $request_all = $request->all();
       $from_status = $task->status;
       $to_status = $request_all['status'];
@@ -390,7 +392,11 @@
       }
 
       // Changed to In Verified/Complete/Done
-      if (($to_status == 4 || $to_status == 5) && $request_all['Complete_Date'] == '') {
+      if (($to_status == 4 || $to_status == 5 || $to_status == 6) && $request_all['Complete_Date'] == '') {
+
+        if ($to_status == 4) {
+          $this->supervisor_mail($task);
+        }
         $request_all['Complete_Date'] = $current_date_time;
       }
 
@@ -408,6 +414,7 @@
         'task_id' => $task->id,
         'from_status' => $from_status,
         'to_status' => $to_status,
+        'user_id' => $current_user,
         'created_at' => $current_date_time,
         'updated_at' => $current_date_time,
       ];
@@ -479,7 +486,7 @@
         ->get();
 
       $supervised_user_ids = [];
-      if(!empty($supervised_users)){
+      if (!empty($supervised_users)) {
         foreach ($supervised_users as $supervised_user) {
           $supervised_user_ids[] = $supervised_user->User_id;
         }
@@ -498,5 +505,47 @@
 
       $vars = ['tasks' => $tasks_data, 'tstatus' => $task_status];
       return view('tasks.supervisor', $vars);
+    }
+
+    /**
+     * Send email to supervisor
+     *
+     * @param \App\Worklist $product
+     * @return \Illuminate\Http\Response
+     */
+    public function supervisor_mail($task)
+    {
+      $task_user = $task->User_id;
+
+      /*$receiver_data = DB::table('users')
+        ->select('users.name', 'users.email')
+        ->where('id', '=', $task_user);*/
+
+      $supervisor_data = DB::table('supervisors')
+        ->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
+        ->select('users.id', 'users.name', 'users.email')
+        ->where('User_id', '=', $task_user)
+        ->get();
+
+      if (!empty($supervisor_data)) {
+        foreach ($supervisor_data as $supervisor_datum) {
+          $to_name = $supervisor_datum->name;
+          $to_email = $supervisor_datum->email;
+          $subject = 'A task is ready to be verified';
+
+          $task_url = url('tasks/'.$task->id.'/edit');
+
+          $data = [
+            'receiver_name' => $to_name,
+            'task_url' => $task_url,
+          ];
+
+          Mail::send('emails.supervisor', $data, function ($message) use ($to_name, $to_email, $subject) {
+            $message->to($to_email, $to_name)
+              ->subject($subject);
+            //$message->from('hatwhite598@gmail.com', 'Test Mail');
+          });
+        }
+      }
     }
   }
