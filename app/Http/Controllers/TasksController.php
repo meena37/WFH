@@ -195,6 +195,8 @@
           } else if ($from_status == 3 && $to_status == 2) {
             $resumed_times[$item->task_id][] = $created_at;// .'---'.$item->task_id;
           }
+
+//          if($to_status == 2 || $to_status == )
         }
 
         /*echo 'Paused <pre>';print_r($paused_times);echo '</pre>';
@@ -212,7 +214,7 @@
             $time = $startTime->diff($endTime)->format('%H:%I:%S');
             $idel_times[] = $time;
 
-            if ($i > 0) {
+            /*if ($i > 0) {
               $time1 = $time;
               $time2 = $old_time;
 
@@ -220,7 +222,7 @@
 
             } else {
               $old_time = $time;
-            }
+            }*/
           }
         }
 
@@ -235,6 +237,8 @@
         }
 
         $submitbtn = $assign_hour + $loss_hours + $Entry_time;
+        
+        ///echo '<pre>';print_r(self::task_time_taken(70));echo '</pre>';die;
 
         return view('tasks.index', ['submitbtn' => $submitbtn, 'tasks' => $tasks, 'auth' => $auth, 'loss_hour' => $total_loss_hour, 'nassigntime' => $nassigntime, 'available_hour' => $available_hour, 'Entry_time' => $Entry_time, 'idle' => $idle, 'tstatus' => $task_status, 'tasktype' => $tasktype, 'shift' => $shift]);
       } else {
@@ -445,7 +449,7 @@
      * @param string $time2
      * @return false|string
      */
-    public function addTwoTimes($time1 = "00:00:00", $time2 = "00:00:00")
+    public static function addTwoTimes($time1 = "00:00:00", $time2 = "00:00:00")
     {
       $time2_arr = [];
       $time1 = $time1;
@@ -533,7 +537,7 @@
           $to_email = $supervisor_datum->email;
           $subject = 'A task is ready to be verified';
 
-          $task_url = url('tasks/'.$task->id.'/edit');
+          $task_url = url('tasks/' . $task->id . '/edit');
 
           $data = [
             'receiver_name' => $to_name,
@@ -543,9 +547,90 @@
           Mail::send('emails.supervisor', $data, function ($message) use ($to_name, $to_email, $subject) {
             $message->to($to_email, $to_name)
               ->subject($subject);
-            //$message->from('hatwhite598@gmail.com', 'Test Mail');
+            $message->from("hatwhite598@gmail.com", 'WFH Notification');
           });
         }
       }
+    }
+
+    /**
+     * @param $task_id
+     */
+    public static function task_time_taken($task_id)
+    {
+      $time_taken = '-';
+
+      $task_history = DB::table('task_status_history')
+        ->select('task_status_history.from_status', 'task_status_history.to_status', 'task_status_history.created_at')
+        ->where('task_status_history.task_id', $task_id)
+        ->get();
+
+      $paused_times = [];
+      $resumed_times = [];
+      $task_start_time = '';
+      $task_end_time = '';
+      foreach ($task_history as $item) {
+        $from_status = $item->from_status;
+        $to_status = $item->to_status;
+        $created_at = $item->created_at;
+
+        if ($from_status == 2 && $to_status == 3) {
+          $paused_times[$task_id][] = $created_at;// .'---'.$item->task_id;
+        } else if ($from_status == 3 && $to_status == 2) {
+          $resumed_times[$task_id][] = $created_at;// .'---'.$item->task_id;
+        } else if ($from_status == 1 && $to_status == 2) {
+          $task_start_time = $created_at;
+        } else if ($from_status == 1 && $to_status == 2) {
+          $task_start_time = $created_at;
+        } else if ($to_status == 4) {
+          $task_end_time = $created_at;
+        }
+      }
+
+      if($task_end_time != '') {
+        $idel_times = [];
+        foreach ($resumed_times as $tsk_id => $resumed_time) {
+          $count = count($resumed_time);
+
+          for ($i = 0; $i < $count; $i++) {
+            $startTime = Carbon::parse($paused_times[$tsk_id][$i]);
+            $endTime = Carbon::parse($resumed_time[$i]);
+
+            $time = $startTime->diff($endTime)->format('%H:%I:%S');
+            $idel_times[] = $time;
+          }
+        }
+
+        $idle = '-';
+        if(!empty($idel_times)) {
+          foreach ($idel_times as $key => $item) {
+            if ($key == 0) {
+              $idle = $item;
+            }
+            if (isset($idel_times[$key + 1])) {
+              $idle = self::addTwoTimes($idle, $idel_times[$key + 1]);
+            }
+          }
+
+
+          $startTime = Carbon::parse($task_start_time);
+          $endTime = Carbon::parse($task_end_time);
+
+          $total_time = $startTime->diff($endTime)->format('%H:%I:%S');
+
+          $time1 = new DateTime($total_time);
+          $time2 = new DateTime($idle);
+          $interval = $time1->diff($time2);
+          $time_taken = $interval->format('%H:%I:%S');
+        }
+
+
+        /*echo '<pre>';print_r($total_time);echo '</pre>';
+        echo '<pre>';print_r($idle);echo '</pre>';
+        echo '<pre>';print_r($time_taken);echo '</pre>';die;*/
+
+      }
+      
+      return $time_taken;
     }
   }

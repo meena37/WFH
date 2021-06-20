@@ -1,3 +1,6 @@
+<?php
+use App\Http\Controllers\TasksController;
+?>
 @extends('layouts.app')
 
 
@@ -36,6 +39,7 @@
                 <th>Plan</th>
 
                 <th width="280px">Status</th>
+                <th width="280px">Time Taken</th>
             </tr>
             </thead>
             <!--end::Table head-->
@@ -98,6 +102,8 @@
 
 
                     </td>
+                    <td><a class="fs-6 text-gray-800 text-hover-primary"
+                           href="{{ route('tasks.edit',$task->id) }}"><?php echo TasksController::task_time_taken($task->id);?></a></td>
                 </tr>
                 @php $i++ @endphp
             @endforeach
