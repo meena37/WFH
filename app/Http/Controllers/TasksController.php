@@ -237,7 +237,7 @@
         }
 
         $submitbtn = $assign_hour + $loss_hours + $Entry_time;
-        
+
         ///echo '<pre>';print_r(self::task_time_taken(70));echo '</pre>';die;
 
         return view('tasks.index', ['submitbtn' => $submitbtn, 'tasks' => $tasks, 'auth' => $auth, 'loss_hour' => $total_loss_hour, 'nassigntime' => $nassigntime, 'available_hour' => $available_hour, 'Entry_time' => $Entry_time, 'idle' => $idle, 'tstatus' => $task_status, 'tasktype' => $tasktype, 'shift' => $shift]);
@@ -391,7 +391,8 @@
       $current_date_time = Carbon::now()->toDateTimeString();
 
       // Changed to In progress
-      if ($to_status == 2 && $request_all['Start_Date'] == '') {
+//      if ($to_status == 2 && $request_all['Start_Date'] == '') {
+      if ($request_all['Start_Date'] == '') {
         $request_all['Start_Date'] = $current_date_time;
       }
 
@@ -561,7 +562,8 @@
       $time_taken = '-';
 
       $task_history = DB::table('task_status_history')
-        ->select('task_status_history.from_status', 'task_status_history.to_status', 'task_status_history.created_at')
+        ->select('task_status_history.from_status', 'task_status_history.to_status', 'task_status_history.created_at', 'tasks.Start_Date')
+        ->join('tasks', 'tasks.id', '=', 'task_status_history.task_id')
         ->where('task_status_history.task_id', $task_id)
         ->get();
 
@@ -573,6 +575,8 @@
         $from_status = $item->from_status;
         $to_status = $item->to_status;
         $created_at = $item->created_at;
+        $task_start_time = $item->Start_Date;
+
 
         if ($from_status == 2 && $to_status == 3) {
           $paused_times[$task_id][] = $created_at;// .'---'.$item->task_id;
@@ -580,14 +584,12 @@
           $resumed_times[$task_id][] = $created_at;// .'---'.$item->task_id;
         } else if ($from_status == 1 && $to_status == 2) {
           $task_start_time = $created_at;
-        } else if ($from_status == 1 && $to_status == 2) {
-          $task_start_time = $created_at;
         } else if ($to_status == 4) {
           $task_end_time = $created_at;
         }
       }
 
-      if($task_end_time != '') {
+      if ($task_end_time != '') {
         $idel_times = [];
         foreach ($resumed_times as $tsk_id => $resumed_time) {
           $count = count($resumed_time);
@@ -602,7 +604,7 @@
         }
 
         $idle = '-';
-        if(!empty($idel_times)) {
+        if (!empty($idel_times)) {
           foreach ($idel_times as $key => $item) {
             if ($key == 0) {
               $idle = $item;
@@ -622,6 +624,11 @@
           $time2 = new DateTime($idle);
           $interval = $time1->diff($time2);
           $time_taken = $interval->format('%H:%I:%S');
+        } else {
+          $startTime = Carbon::parse($task_start_time);
+          $endTime = Carbon::parse($task_end_time);
+
+          $time_taken = $startTime->diff($endTime)->format('%H:%I:%S');
         }
 
 
@@ -630,7 +637,7 @@
         echo '<pre>';print_r($time_taken);echo '</pre>';die;*/
 
       }
-      
+
       return $time_taken;
     }
   }
