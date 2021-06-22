@@ -20,7 +20,7 @@
     {
       global $task_status;
 
-      $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
+       $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
       $endDate = Carbon::createFromFormat('d/m/Y', '16/05/2021');
 
       $users = DB::table('tasks')
@@ -39,7 +39,7 @@
         ->get();
 
 
-      $user = Auth::id();
+       $user = Auth::id();//start call task table and shift table
       $auth = DB::table('supervisors')
         ->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
         //->join('users', 'supervisors.User_id', '=', 'users.id')
@@ -76,7 +76,7 @@
       // print_r($submitbtn);
 
       if ($user == $user) {
-        //start call task table and shift table
+        
         $tasktype = DB::table('tasktypes')->get();
         $shift = DB::table('shifts')->get();
 
@@ -136,7 +136,7 @@
         $loss_hours = DB::table('tasks')
           //->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
           ->join('users', 'tasks.User_id', '=', 'users.id')
-          ->select('tasks.loss_Hour', 'users.name', 'tasks.created_at')
+          ->select('tasks.loss_Hour', 'users.name', 'tasks.created_at')->where('User_id', '=', $user)
           ->whereDate('tasks.created_at', '=', $startDate)
           ->orderBy("loss_Hour")->sum("loss_Hour");
         // Assign Hour
@@ -145,22 +145,30 @@
         $assign_hours = DB::table('tasks')
           //->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
           ->join('users', 'tasks.User_id', '=', 'users.id')
-          ->select('tasks.*', 'users.name', 'tasks.created_at')
+          ->select('tasks.*', 'users.name', 'tasks.created_at')->where('User_id', '=', $user)
           ->whereDate('tasks.created_at', '=', $startDate)
           ->sum('To_do_Time');
-        if ($assign_hours != 0) {
+       if ($assign_hours != 0) {
           $ctime = DateTime::createFromFormat('i', $assign_hours);
-          $nassigntime = $assign_hours / 60;
+          $nassigntime = intdiv($assign_hours, 60) . ':' . ($assign_hours % 60) . ':00';
         } else {
-          $nassigntime = 00;
+          $nassigntime = intdiv(0, 60) . ':' . (0 % 60) . ':00';
         }
-        $assign_hour = $assign_hours / 60;
+        $assign_hour = $assign_hours ;
 
         // Available Hour
         $minutes = $assign_hour;
 
         $hours = floor($minutes / 60) . ':' . ($minutes - floor($minutes / 60) * 60);
-        $available_hour = 8 - $loss_hours - $assign_hour;
+        $available_hours = 480 - $loss_hours - $assign_hour;
+		$available_total= $loss_hours + $assign_hour;
+			if( $available_total >=0){
+				
+				 $available_hour =intdiv($available_hours, 60) . ':' . ($available_hours % 60) . ':00';
+			}
+			else{
+				$available_hour = intdiv(0, 60) . ':' . (0 % 60) . ':00';
+			}
 
         //$ctimes = DateTime::createFromFormat('h', $available_hours);
         //$available_hour = $ctimes->format('H:i:s');
@@ -168,7 +176,7 @@
         $Entry_time = DB::table('tasks')
           //->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
           ->join('users', 'tasks.User_id', '=', 'users.id')
-          ->select('tasks.*', 'users.name', 'tasks.created_at')
+          ->select('tasks.*', 'users.name', 'tasks.created_at')->where('User_id', '=', $user)
           ->whereDate('tasks.created_at', '=', $startDate)
           ->sum('Entry_time');
         /*$idle = DB::table('tasks')
