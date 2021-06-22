@@ -2,68 +2,84 @@
 
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            <h2>Edit New User</h2>
-        </div>
+
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bolder fs-3 mb-1">Edit Supervisor</span>
+        </h3>
+
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>
+            <a class="btn btn-sm btn-primary" href="{{ route('supervisor.index') }}"> Back</a>
         </div>
     </div>
-</div>
+
+    @if (count($errors) > 0)
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
 
-@if (count($errors) > 0)
-  <div class="alert alert-danger">
-    <strong>Whoops!</strong> There were some problems with your input.<br><br>
-    <ul>
-       @foreach ($errors->all() as $error)
-         <li>{{ $error }}</li>
-       @endforeach
-    </ul>
-  </div>
-@endif
+
+    {!! Form::open(array('route' => 'supervisor.store','method'=>'POST')) !!}
+    <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+
+        <!--begin::Input group-->
+        <div class="row mb-6">
+            <!--begin::Label-->
+            <label class="fs-6 fw-bold mb-2">
+                <span class="required">Supervisor</span>
+                <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title=""
+                   data-bs-original-title="Supervisor" aria-label="Supervisor"></i>
+            </label>
+            <!--end::Label-->
+            <!--begin::Col-->
+            <!--begin::Input-->
+            <input type="hidden" name="supervisor_id" value="{{$sel_supervisor_id}}">
+            <select name="supervisor_ids" aria-label="Select a Supervisor" data-control="select2"
+                    data-placeholder="Select a Supervisor..."
+                    class="form-select form-select-solid fw-bolder select2-hidden-accessible" required="required" readonly="readonly" disabled="disabled">
+                <option value="">Select Supervisor...</option>
+              <?php foreach ($all_users as $normal_user) {?>
+                <option value="{{$normal_user->id}}" {{($normal_user->id == $sel_supervisor_id)?'selected':''}}>{{$normal_user->name}}</option>
+              <?php } ?>
+            </select>
+            <!--end::Input-->
+            <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+
+        <div class="d-flex flex-column mb-7 fv-row fv-plugins-icon-container" data-select2-id="select2-data-71-qd5z">
+            <!--begin::Label-->
+            <label class="fs-6 fw-bold mb-2">
+                <span class="required">User</span>
+                <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title=""
+                   data-bs-original-title="User" aria-label="User"></i>
+            </label>
+            <!--end::Label-->
+            <!--begin::Input-->
+            <select name="normal_user_id[]" class="form-select form-select-solid" data-control="select2" data-placeholder="Select an option" data-allow-clear="true" multiple="multiple" required="required">
+                <option value="">Select User...</option>
+              <?php foreach ($all_users as $all_user) {?>
+                <option value="{{$all_user->id}}" {{(in_array($all_user->id, $sel_users_ids))?'selected':''}}>{{$all_user->name}}</option>
+              <?php } ?>
+            </select>
+            <!--end::Input-->
+            <div class="fv-plugins-message-container"></div>
+        </div>
+
+    </div>
 
 
-{!! Form::model($user, ['method' => 'PATCH','route' => ['users.update', $user->id]]) !!}
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Name:</strong>
-            {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Email:</strong>
-            {!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Password:</strong>
-            {!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Confirm Password:</strong>
-            {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Role:</strong>
-            {!! Form::select('roles[]', $roles,$userRole, array('class' => 'form-control','multiple')) !!}
-        </div>
-    </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
-</div>
-{!! Form::close() !!}
+    {!! Form::close() !!}
 
 
-<p class="text-center text-primary"><small>Tutorial by ItSolutionStuff.com</small></p>
 @endsection

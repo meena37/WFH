@@ -109,7 +109,7 @@
           ->select('tasks.loss_Hour', 'users.name', 'tasks.created_at')
           ->where('tasks.User_id', '=', $user)
           ->whereDate('tasks.created_at', '=', $startDate)
-          ->orderBy("loss_Hour")->pluck('loss_Hour')->take(1);
+          ->orderBy("loss_Hour")->pluck('loss_Hour')->take(1)->first();
 
         /*echo '<pre>';print_r($loss_hour->first());echo '</pre>';
         echo '<pre>';print_r($loss_hour);echo '</pre>';die;*/
@@ -118,7 +118,7 @@
         $rem_min = DB::table('tasks')
           ->select('Time_acc_to_task')
           ->whereNull('Complete_Date')
-          //->whereNull('Start_Date')
+          ->whereNull('Start_Date')
           ->where('tasks.User_id', '=', $user)
           ->whereBetween('created_at', [$start_date, $end_date])
           ->sum("Time_acc_to_task");
@@ -126,8 +126,11 @@
         $rem_hrs = intdiv($rem_min, 60) . ':' . ($rem_min % 60) . ':00';
 
         $total_loss_hour = '-';
-        if (!empty($loss_hour) && $rem_hrs > 0) {
-          $total_loss_hour = $this->addTwoTimes($loss_hour->first(), $rem_hrs);
+        if ($loss_hour != '') {
+          $total_loss_hour = $loss_hour;
+          if ($rem_hrs != '') {
+            $total_loss_hour = $this->addTwoTimes($loss_hour, $rem_hrs);
+          }
         }
 
         $loss_hours = DB::table('tasks')
@@ -400,7 +403,7 @@
       if (($to_status == 4 || $to_status == 5 || $to_status == 6) && $request_all['Complete_Date'] == '') {
 
         if ($to_status == 4) {
-          $this->supervisor_mail($task);
+          //$this->supervisor_mail($task);
         }
         $request_all['Complete_Date'] = $current_date_time;
       }

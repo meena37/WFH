@@ -2655,11 +2655,12 @@
         <!--end::Page Vendors Javascript-->
         <!--begin::Page Custom Javascript(used by this page)-->
         <script src="{{  URL::asset('demo1/dist/assets/js/custom/apps/customers/list/export.js') }}"></script>
-        <script src="{{  URL::asset('demo1/dist/assets/js/custom/apps/customers/list/list.j') }}s"></script>
+        <script src="{{  URL::asset('demo1/dist/assets/js/custom/apps/customers/list/list.js') }}"></script>
         <script src="{{  URL::asset('demo1/dist/assets/js/custom/apps/customers/add.js') }}"></script>
         <script src="{{  URL::asset('demo1/dist/assets/js/custom/widgets.js') }}"></script>
         <script src="{{  URL::asset('demo1/dist/assets/js/custom/modals/create-app.js') }}"></script>
         <script src="{{  URL::asset('demo1/dist/assets/js/custom/modals/upgrade-plan.js') }}"></script>
+        <script src="{{  URL::asset('demo1/src/js/components/search.js') }}"></script>
         <!--end::Page Custom Javascript-->
         <!--end::Javascript-->
 </body>
