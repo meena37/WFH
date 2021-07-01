@@ -4,18 +4,15 @@ use Carbon\carbon;?>
 
 @section('content')
 
-    <div class="scroll-y px-10 px-lg-15 pt-0 pb-15">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <br/>
-                <h2>Edit Task</h2>
-            </div>
-            <div class="pull-right">
-            <!--a class="btn btn-primary" href="{{ route('worklist.index') }}"> Back</a-->
-            </div>
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bolder fs-3 mb-1">Task Status</span>
+        </h3>
+
+        <div class="pull-right">
+            <a class="btn btn-sm btn-primary" href="{{ route('tasks.index') }}"> Back</a>
         </div>
     </div>
-
 
     @if ($errors->any())
         <div class="alert alert-danger">

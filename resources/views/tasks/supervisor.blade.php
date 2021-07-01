@@ -50,27 +50,27 @@ use App\Http\Controllers\TasksController;
                 <tr>
 
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}">{{ $task->Timestamp }}</a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}">{{ $task->Timestamp }}</a></td>
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}">{{$i+1}}</a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}">{{$i+1}}</a></td>
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}">{{ $task->Task_Shift}}</a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}">{{ $task->Task_Shift}}</a></td>
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}">{{ $task->Task_type}}</a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}">{{ $task->Task_type}}</a></td>
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}">{{ $task->Task_Title }}</a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}">{{ $task->Task_Title }}</a></td>
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}">{{ $task->Task_Details}}</a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}">{{ $task->Task_Details}}</a></td>
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}">{{ $task->Task_QTY}}</a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}">{{ $task->Task_QTY}}</a></td>
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}">{{ $task->Time_acc_to_task}} </a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}">{{ $task->Time_acc_to_task}} </a></td>
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}">{{ $task->To_do_Time }} minute </a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}">{{ $task->To_do_Time }} minute </a></td>
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}">{{ $task->Proposed_Time }}</a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}">{{ $task->Proposed_Time }}</a></td>
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}">{{ $task->Plan }}</a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}">{{ $task->Plan }}</a></td>
 
 
                     <td>
@@ -103,7 +103,7 @@ use App\Http\Controllers\TasksController;
 
                     </td>
                     <td><a class="fs-6 text-gray-800 text-hover-primary"
-                           href="{{ route('tasks.edit',$task->id) }}"><?php echo TasksController::task_time_taken($task->id);?></a></td>
+                           href="{{ url('task-status/'.$task->id.'/change') }}"><?php echo TasksController::task_time_taken($task->id);?></a></td>
                 </tr>
                 @php $i++ @endphp
             @endforeach
