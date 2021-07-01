@@ -20,7 +20,7 @@
     {
       global $task_status;
 
-       $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
+      $startDate = Carbon::createFromFormat('d/m/Y', date('d/m/Y'));
       $endDate = Carbon::createFromFormat('d/m/Y', '16/05/2021');
 
       $users = DB::table('tasks')
@@ -39,7 +39,7 @@
         ->get();
 
 
-       $user = Auth::id();//start call task table and shift table
+      $user = Auth::id();//start call task table and shift table
       $auth = DB::table('supervisors')
         ->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
         //->join('users', 'supervisors.User_id', '=', 'users.id')
@@ -76,7 +76,7 @@
       // print_r($submitbtn);
 
       if ($user == $user) {
-        
+
         $tasktype = DB::table('tasktypes')->get();
         $shift = DB::table('shifts')->get();
 
@@ -131,6 +131,17 @@
           if ($rem_hrs != '') {
             $total_loss_hour = $this->addTwoTimes($loss_hour, $rem_hrs);
           }
+
+          // Check if total loss hour is greater than 8hrs
+          $tmp = explode(':', $total_loss_hour);
+          if (count($tmp) == 3) {
+            if ($tmp[0] >= 8) {
+              $tmp[0] = '08';
+              $tmp[1] = '00';
+              $tmp[2] = '00';
+              $total_loss_hour = implode(':', $tmp);;
+            }
+          }
         }
 
         $loss_hours = DB::table('tasks')
@@ -148,27 +159,26 @@
           ->select('tasks.*', 'users.name', 'tasks.created_at')->where('User_id', '=', $user)
           ->whereDate('tasks.created_at', '=', $startDate)
           ->sum('To_do_Time');
-       if ($assign_hours != 0) {
+        if ($assign_hours != 0) {
           $ctime = DateTime::createFromFormat('i', $assign_hours);
           $nassigntime = intdiv($assign_hours, 60) . ':' . ($assign_hours % 60) . ':00';
         } else {
           $nassigntime = intdiv(0, 60) . ':' . (0 % 60) . ':00';
         }
-        $assign_hour = $assign_hours ;
+        $assign_hour = $assign_hours;
 
         // Available Hour
         $minutes = $assign_hour;
 
         $hours = floor($minutes / 60) . ':' . ($minutes - floor($minutes / 60) * 60);
         $available_hours = 480 - $loss_hours - $assign_hour;
-		$available_total= $loss_hours + $assign_hour;
-			if( $available_total >=0){
-				
-				 $available_hour =intdiv($available_hours, 60) . ':' . ($available_hours % 60) . ':00';
-			}
-			else{
-				$available_hour = intdiv(0, 60) . ':' . (0 % 60) . ':00';
-			}
+        $available_total = $loss_hours + $assign_hour;
+        if ($available_total >= 0) {
+
+          $available_hour = intdiv($available_hours, 60) . ':' . ($available_hours % 60) . ':00';
+        } else {
+          $available_hour = intdiv(0, 60) . ':' . (0 % 60) . ':00';
+        }
 
         //$ctimes = DateTime::createFromFormat('h', $available_hours);
         //$available_hour = $ctimes->format('H:i:s');
@@ -336,7 +346,7 @@
       ]);
 
       return redirect()->route('tasks.index')
-        ->with('success', 'Work created successfully.');
+        ->with('success', 'Task created successfully.');
     }
 
     /**
@@ -367,21 +377,10 @@
         ->select('supervisors.Supervisor_id')
         ->value('Supervisor_id');
 
-      $supervisor_data = DB::table('supervisors')
-        ->select('supervisors.Supervisor_id')
-        ->where('User_id', '=', $task->User_id)
-        ->get();
+      $tasktype = DB::table('tasktypes')->get();
+      $shift = DB::table('shifts')->get();
 
-      $is_supervisor = FALSE;
-      if (!empty($supervisor_data)) {
-        foreach ($supervisor_data as $supervisor_datum) {
-          if ($supervisor_datum->Supervisor_id == $user) {
-            $is_supervisor = TRUE;
-          }
-        }
-      }
-
-      $vars = ['task' => $task, 'auth' => $auth, 'tstatus' => $task_status, 'is_supervisor' => $is_supervisor];
+      $vars = ['task' => $task, 'auth' => $auth, 'tasktype' => $tasktype, 'shift' => $shift];
       return view('tasks.edit', $vars);
     }
 
@@ -394,51 +393,26 @@
      */
     public function update(Request $request, Task $task)
     {
-      $current_user = Auth::id();
-      $request_all = $request->all();
-      $from_status = $task->status;
-      $to_status = $request_all['status'];
-
-      $current_date_time = Carbon::now()->toDateTimeString();
-
-      // Changed to In progress
-//      if ($to_status == 2 && $request_all['Start_Date'] == '') {
-      if ($request_all['Start_Date'] == '') {
-        $request_all['Start_Date'] = $current_date_time;
-      }
-
-      // Changed to In Verified/Complete/Done
-      if (($to_status == 4 || $to_status == 5 || $to_status == 6) && $request_all['Complete_Date'] == '') {
-
-        if ($to_status == 4) {
-          //$this->supervisor_mail($task);
-        }
-        $request_all['Complete_Date'] = $current_date_time;
-      }
-
       request()->validate([
+        'loss_Hour' => '',
+        'Timestamp' => 'required',
+        'Task_type_id' => 'required',
+        'Task_Shift_id' => 'required',
+        'Task_Title' => 'required',
+        'Task_Details' => 'required',
+        'Task_QTY' => 'required',
+        'Time_acc_to_task' => 'required',
+        'To_do_Time' => '',
         'Proposed_Date' => '',
         'Proposed_Time' => '',
         'Plan' => '',
         'User_id' => '',
         'Supervisor_id' => '',
       ]);
-      $task->update($request_all);
-
-      // Task status history
-      $data = [
-        'task_id' => $task->id,
-        'from_status' => $from_status,
-        'to_status' => $to_status,
-        'user_id' => $current_user,
-        'created_at' => $current_date_time,
-        'updated_at' => $current_date_time,
-      ];
-
-      DB::table('task_status_history')->insert($data);
+      $task->update($request->all());
 
       return redirect()->route('tasks.index')
-        ->with('success', 'Work updated successfully');
+        ->with('success', 'Task updated successfully');
     }
 
     /**
@@ -451,8 +425,10 @@
     {
       $task->delete();
 
+      DB::table('task_status_history')->where('task_id', '=', $task->id)->delete();
+
       return redirect()->route('tasks.index')
-        ->with('success', 'Work deleted successfully');
+        ->with('success', 'Task deleted successfully');
     }
 
     /**
@@ -650,5 +626,109 @@
       }
 
       return $time_taken;
+    }
+
+    /**
+     * Task status change
+     *
+     * @param \App\Worklist $product
+     * @return \Illuminate\Http\Response
+     */
+    public function task_status_form($task_id)
+    {
+      if (!is_numeric($task_id)) {
+        return view("404");
+      }
+      global $task_status;
+
+      $task = DB::table('tasks')
+        ->select('*')
+        ->where('id', '=', $task_id)
+        ->first();
+
+      $user = Auth::id();
+      $auth = DB::table('supervisors')
+        ->join('users', 'supervisors.Supervisor_id', '=', 'users.id')
+        //->join('users', 'supervisors.User_id', '=', 'users.id')
+        ->select('supervisors.Supervisor_id')
+        ->value('Supervisor_id');
+
+      $supervisor_data = DB::table('supervisors')
+        ->select('supervisors.Supervisor_id')
+        ->where('User_id', '=', $task->User_id)
+        ->get();
+
+      $is_supervisor = FALSE;
+      if (!empty($supervisor_data)) {
+        foreach ($supervisor_data as $supervisor_datum) {
+          if ($supervisor_datum->Supervisor_id == $user) {
+            $is_supervisor = TRUE;
+          }
+        }
+      }
+
+      $vars = ['task' => $task, 'auth' => $auth, 'tstatus' => $task_status, 'is_supervisor' => $is_supervisor];
+      return view('tasks.status', $vars);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Product $product
+     * @return \Illuminate\Http\Response
+     */
+    public function task_status_update(Request $request)
+    {
+      $current_user = Auth::id();
+      $request_all = $request->all();
+      $task_id = $request_all['task_id'];
+      $from_status = $request_all['old_status'];
+      $to_status = $request_all['status'];
+
+      $current_date_time = Carbon::now()->toDateTimeString();
+
+      // Changed to In progress
+//      if ($to_status == 2 && $request_all['Start_Date'] == '') {
+      if ($request_all['Start_Date'] == '') {
+        $request_all['Start_Date'] = $current_date_time;
+      }
+
+      // Changed to In Verified/Complete/Done
+      if (($to_status == 4 || $to_status == 5 || $to_status == 6) && $request_all['Complete_Date'] == '') {
+
+        if ($to_status == 4) {
+          //$this->supervisor_mail($task);
+        }
+        $request_all['Complete_Date'] = $current_date_time;
+      }
+
+      // unset
+      unset($request_all['_token']);
+      unset($request_all['_method']);
+      unset($request_all['task_id']);
+      unset($request_all['old_status']);
+
+
+      // Update task data
+      DB::table('tasks')
+        ->where('id', $task_id)
+        ->update($request_all);
+
+      // Task status history
+      $data = [
+        'task_id' => $task_id,
+        'from_status' => $from_status,
+        'to_status' => $to_status,
+        'user_id' => $current_user,
+        'created_at' => $current_date_time,
+        'updated_at' => $current_date_time,
+      ];
+
+      DB::table('task_status_history')->insert($data);
+
+      return redirect()->route('tasks.index')
+        ->with('success', 'Task Status Updated Successfully');
     }
   }
