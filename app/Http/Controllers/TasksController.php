@@ -196,68 +196,29 @@
           ->whereDate('tasks.created_at', '=', $startDate)
           ->sum('resumediff');*/
 
+        $submitbtn = $assign_hour + $loss_hours + $Entry_time;
+
         // Idle Time
-        $task_history = DB::table('task_status_history')
-          ->select('task_id', 'task_status_history.from_status', 'task_status_history.to_status', 'task_status_history.created_at')
-          ->join('tasks', 'tasks.id', '=', 'task_status_history.task_id')
-          ->where('tasks.User_id', $user)
-          ->whereBetween('task_status_history.created_at', [$start_date, $end_date])
-          ->get();
+        $startTime = Carbon::parse($date_from);
+        $endTime = Carbon::now()->toDateTimeString();
 
-        $paused_times = [];
-        $resumed_times = [];
-        foreach ($task_history as $item) {
-          $from_status = $item->from_status;
-          $to_status = $item->to_status;
-          $created_at = $item->created_at;
 
-          if ($from_status == 2 && $to_status == 3) {
-            $paused_times[$item->task_id][] = $created_at;// .'---'.$item->task_id;
-          } else if ($from_status == 3 && $to_status == 2) {
-            $resumed_times[$item->task_id][] = $created_at;// .'---'.$item->task_id;
-          }
+        $passed_time = $startTime->diff($endTime)->format('%H:%I:%S');
+        $work_done = self::task_time_taken(0, TRUE);
+        
+        /*echo '<pre>';print_r($passed_time);echo '</pre>';
+        echo '<pre>';print_r($work_done);echo '</pre>';die;*/
 
-//          if($to_status == 2 || $to_status == )
-        }
-
-        /*echo 'Paused <pre>';print_r($paused_times);echo '</pre>';
-        echo 'Resumed <pre>';print_r($resumed_times);echo '</pre>';*/
-
-        $old_time = '';
-        $idel_times = [];
-        foreach ($resumed_times as $task_id => $resumed_time) {
-          $count = count($resumed_time);
-
-          for ($i = 0; $i < $count; $i++) {
-            $startTime = Carbon::parse($paused_times[$task_id][$i]);
-            $endTime = Carbon::parse($resumed_time[$i]);
-
-            $time = $startTime->diff($endTime)->format('%H:%I:%S');
-            $idel_times[] = $time;
-
-            /*if ($i > 0) {
-              $time1 = $time;
-              $time2 = $old_time;
-
-              $old_time = $this->addTwoTimes($time1, $time2);
-
-            } else {
-              $old_time = $time;
-            }*/
-          }
-        }
 
         $idle = '-';
-        foreach ($idel_times as $key => $item) {
-          if ($key == 0) {
-            $idle = $item;
-          }
-          if (isset($idel_times[$key + 1])) {
-            $idle = $this->addTwoTimes($idle, $idel_times[$key + 1]);
+        if ($date_from < $endTime) {
+          if ($work_done != '-') {
+            $passed_time_time = Carbon::parse($passed_time);
+            $idle = $passed_time_time->diff($work_done)->format('%H:%I:%S');
+          } else {
+            $idle = $passed_time;
           }
         }
-
-        $submitbtn = $assign_hour + $loss_hours + $Entry_time;
 
         ///echo '<pre>';print_r(self::task_time_taken(70));echo '</pre>';die;
 
@@ -544,15 +505,29 @@
     /**
      * @param $task_id
      */
-    public static function task_time_taken($task_id)
+    public static function task_time_taken($task_id, $is_all_task = FALSE)
     {
       $time_taken = '-';
 
-      $task_history = DB::table('task_status_history')
-        ->select('task_status_history.from_status', 'task_status_history.to_status', 'task_status_history.created_at', 'tasks.Start_Date')
-        ->join('tasks', 'tasks.id', '=', 'task_status_history.task_id')
-        ->where('task_status_history.task_id', $task_id)
-        ->get();
+      if ($is_all_task) {
+
+        $date_from = date('Y-m-d 10:00:00');
+        $date_to = date('Y-m-d 18:00:00');
+
+        $task_history = DB::table('task_status_history')
+          ->select('task_status_history.from_status', 'task_status_history.to_status', 'task_status_history.created_at', 'tasks.Start_Date')
+          ->join('tasks', 'tasks.id', '=', 'task_status_history.task_id')
+          ->whereBetween('tasks.created_at', [$date_from, $date_to])
+          ->get();
+
+      } else {
+
+        $task_history = DB::table('task_status_history')
+          ->select('task_status_history.from_status', 'task_status_history.to_status', 'task_status_history.created_at', 'tasks.Start_Date')
+          ->join('tasks', 'tasks.id', '=', 'task_status_history.task_id')
+          ->where('task_status_history.task_id', $task_id)
+          ->get();
+      }
 
       $paused_times = [];
       $resumed_times = [];
@@ -618,11 +593,9 @@
           $time_taken = $startTime->diff($endTime)->format('%H:%I:%S');
         }
 
-
         /*echo '<pre>';print_r($total_time);echo '</pre>';
         echo '<pre>';print_r($idle);echo '</pre>';
         echo '<pre>';print_r($time_taken);echo '</pre>';die;*/
-
       }
 
       return $time_taken;
