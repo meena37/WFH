@@ -173,8 +173,8 @@
         $hours = floor($minutes / 60) . ':' . ($minutes - floor($minutes / 60) * 60);
         $available_hours = 480 - $loss_hours - $assign_hour;
         $available_total = $loss_hours + $assign_hour;
-        if ($available_total >= 0) {
 
+        if ($available_total >= 0 && $available_hours >= 0) {
           $available_hour = intdiv($available_hours, 60) . ':' . ($available_hours % 60) . ':00';
         } else {
           $available_hour = intdiv(0, 60) . ':' . (0 % 60) . ':00';
@@ -205,7 +205,7 @@
 
         $passed_time = $startTime->diff($endTime)->format('%H:%I:%S');
         $work_done = self::task_time_taken(0, TRUE);
-        
+
         /*echo '<pre>';print_r($passed_time);echo '</pre>';
         echo '<pre>';print_r($work_done);echo '</pre>';die;*/
 
@@ -370,7 +370,11 @@
         'User_id' => '',
         'Supervisor_id' => '',
       ]);
-      $task->update($request->all());
+
+
+      $request_all = $request->all();
+      $request_all['To_do_Time'] = $request_all['Task_QTY'] * $request_all['Time_acc_to_task'] + 5;
+      $task->update($request_all);
 
       return redirect()->route('tasks.index')
         ->with('success', 'Task updated successfully');

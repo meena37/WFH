@@ -20,7 +20,7 @@ use App\Http\Controllers\TasksController;
     <!-- Add  Popup Model -->
     <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog mw-650px">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">Add New Task</h4>

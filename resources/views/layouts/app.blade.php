@@ -34,7 +34,7 @@
 					<!--begin::Brand-->
 					<div class="aside-logo flex-column-auto" id="kt_aside_logo">
 						<!--begin::Logo-->
-						<a href="index.html">
+						<a href="{{url('/home')}}">
 							<img alt="Logo" src="{{  URL::asset('demo1/dist/assets/media/logos/logo.jpeg') }}" class="h-15px logo" />
 						</a>
 						<!--end::Logo-->
@@ -266,7 +266,7 @@
 							<!--end::Aside mobile toggle-->
 							<!--begin::Mobile logo-->
 							<div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-								<a href="index.html" class="d-lg-none">
+								<a href="{{url('/home')}}" class="d-lg-none">
 									<img alt="Logo" src="{{  URL::asset('demo1/dist/assets/media/logos/logo.jpeg') }}" class="h-15px" />
 								</a>
 							</div>
@@ -280,9 +280,7 @@
 										<!--begin::Menu-->
 										<div class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch" id="#kt_header_menu" data-kt-menu="true">
 											<div class="menu-item me-lg-1">
-												<a class="menu-link py-3" href="index.html">
-													<span class="menu-title">Dashboard</span>
-												</a>
+
 											</div>
 											 
 											 
@@ -1007,7 +1005,7 @@
 														<!--begin::Actions-->
 														<div class="d-flex justify-content-end">
 															<button type="reset" class="btn btn-sm btn-white fw-bolder btn-active-light-primary me-2" data-kt-search-element="advanced-options-form-cancel">Cancel</button>
-															<a href="pages/search/horizontal.html" class="btn btn-sm fw-bolder btn-primary" data-kt-search-element="advanced-options-form-search">Search</a>
+															<a href="#" class="btn btn-sm fw-bolder btn-primary" data-kt-search-element="advanced-options-form-search">Search</a>
 														</div>
 														<!--end::Actions-->
 													</form>
@@ -1360,7 +1358,7 @@
 														<!--end::Items-->
 														<!--begin::View more-->
 														<div class="py-3 text-center border-top">
-															<a href="pages/profile/activity.html" class="btn btn-color-gray-600 btn-active-color-primary">View All
+															<a href="#" class="btn btn-color-gray-600 btn-active-color-primary">View All
 															<!--begin::Svg Icon | path: icons/stockholm/Navigation/Right-2.svg-->
 															<span class="svg-icon svg-icon-5">
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1614,7 +1612,7 @@
 														<!--end::Items-->
 														<!--begin::View more-->
 														<div class="py-3 text-center border-top">
-															<a href="pages/profile/activity.html" class="btn btn-color-gray-600 btn-active-color-primary">View All
+															<a href="#" class="btn btn-color-gray-600 btn-active-color-primary">View All
 															<!--begin::Svg Icon | path: icons/stockholm/Navigation/Right-2.svg-->
 															<span class="svg-icon svg-icon-5">
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1669,7 +1667,7 @@
 												<div class="row g-0">
 													<!--begin:Item-->
 													<div class="col-6">
-														<a href="pages/projects/budget.html" class="d-flex flex-column flex-center h-100 p-6 bg-hover-light border-end border-bottom">
+														<a href="#" class="d-flex flex-column flex-center h-100 p-6 bg-hover-light border-end border-bottom">
 															<!--begin::Svg Icon | path: icons/stockholm/Shopping/Euro.svg-->
 															<span class="svg-icon svg-icon-3x svg-icon-success mb-2">
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1688,7 +1686,7 @@
 													<!--end:Item-->
 													<!--begin:Item-->
 													<div class="col-6">
-														<a href="pages/projects/settings.html" class="d-flex flex-column flex-center h-100 p-6 bg-hover-light border-bottom">
+														<a href="#" class="d-flex flex-column flex-center h-100 p-6 bg-hover-light border-bottom">
 															<!--begin::Svg Icon | path: icons/stockholm/Communication/Mail-attachment.svg-->
 															<span class="svg-icon svg-icon-3x svg-icon-success mb-2">
 																<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1704,7 +1702,7 @@
 													<!--end:Item-->
 													<!--begin:Item-->
 													<div class="col-6">
-														<a href="pages/projects/list.html" class="d-flex flex-column flex-center h-100 p-6 bg-hover-light border-end">
+														<a href="#" class="d-flex flex-column flex-center h-100 p-6 bg-hover-light border-end">
 															<!--begin::Svg Icon | path: icons/stockholm/Shopping/Box2.svg-->
 															<span class="svg-icon svg-icon-3x svg-icon-success mb-2">
 																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1723,7 +1721,7 @@
 													<!--end:Item-->
 													<!--begin:Item-->
 													<div class="col-6">
-														<a href="pages/projects/users.html" class="d-flex flex-column flex-center h-100 p-6 bg-hover-light">
+														<a href="#" class="d-flex flex-column flex-center h-100 p-6 bg-hover-light">
 															<!--begin::Svg Icon | path: icons/stockholm/Communication/Group.svg-->
 															<span class="svg-icon svg-icon-3x svg-icon-success mb-2">
 																<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1741,7 +1739,7 @@
 												<!--end:Nav-->
 												<!--begin::View more-->
 												<div class="py-2 text-center border-top">
-													<a href="pages/profile/activity.html" class="btn btn-color-gray-600 btn-active-color-primary">View All
+													<a href="#" class="btn btn-color-gray-600 btn-active-color-primary">View All
 													<!--begin::Svg Icon | path: icons/stockholm/Navigation/Right-2.svg-->
 													<span class="svg-icon svg-icon-5">
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -1791,12 +1789,12 @@
 												<!--end::Menu separator-->
 												<!--begin::Menu item-->
 												<div class="menu-item px-5">
-													<a href="account/overview.html" class="menu-link px-5">My Profile</a>
+													<a href="#" class="menu-link px-5">My Profile</a>
 												</div>
 												<!--end::Menu item-->
 												<!--begin::Menu item-->
 												<div class="menu-item px-5">
-													<a href="pages/projects/list.html" class="menu-link px-5">
+													<a href="#" class="menu-link px-5">
 														<span class="menu-text">My Projects</span>
 														<span class="menu-badge">
 															<span class="badge badge-light-danger badge-circle fw-bolder fs-7">3</span>
@@ -1814,22 +1812,22 @@
 													<div class="menu-sub menu-sub-dropdown w-175px py-4">
 														<!--begin::Menu item-->
 														<div class="menu-item px-3">
-															<a href="account/referrals.html" class="menu-link px-5">Referrals</a>
+															<a href="#" class="menu-link px-5">Referrals</a>
 														</div>
 														<!--end::Menu item-->
 														<!--begin::Menu item-->
 														<div class="menu-item px-3">
-															<a href="account/billing.html" class="menu-link px-5">Billing</a>
+															<a href="#" class="menu-link px-5">Billing</a>
 														</div>
 														<!--end::Menu item-->
 														<!--begin::Menu item-->
 														<div class="menu-item px-3">
-															<a href="account/statements.html" class="menu-link px-5">Payments</a>
+															<a href="#" class="menu-link px-5">Payments</a>
 														</div>
 														<!--end::Menu item-->
 														<!--begin::Menu item-->
 														<div class="menu-item px-3">
-															<a href="account/statements.html" class="menu-link d-flex flex-stack px-5">Statements
+															<a href="#" class="menu-link d-flex flex-stack px-5">Statements
 															<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="View your statements"></i></a>
 														</div>
 														<!--end::Menu item-->
@@ -1852,7 +1850,7 @@
 												<!--end::Menu item-->
 												<!--begin::Menu item-->
 												<div class="menu-item px-5">
-													<a href="account/statements.html" class="menu-link px-5">My Statements</a>
+													<a href="#" class="menu-link px-5">My Statements</a>
 												</div>
 												<!--end::Menu item-->
 												<!--begin::Menu separator-->
@@ -1869,7 +1867,7 @@
 													<div class="menu-sub menu-sub-dropdown w-175px py-4">
 														<!--begin::Menu item-->
 														<div class="menu-item px-3">
-															<a href="account/settings.html" class="menu-link d-flex px-5 active">
+															<a href="#" class="menu-link d-flex px-5 active">
 															<span class="symbol symbol-20px me-4">
 																<img class="rounded-1" src="{{  URL::asset('demo1/dist/assets/media/flags/united-states.svg') }}" alt="metronic" />
 															</span>English</a>
@@ -1877,7 +1875,7 @@
 														<!--end::Menu item-->
 														<!--begin::Menu item-->
 														<div class="menu-item px-3">
-															<a href="account/settings.html" class="menu-link d-flex px-5">
+															<a href="#" class="menu-link d-flex px-5">
 															<span class="symbol symbol-20px me-4">
 																<img class="rounded-1" src="{{  URL::asset('demo1/dist/assets/media/flags/spain.svg') }}" alt="metronic" />
 															</span>Spanish</a>
@@ -1885,7 +1883,7 @@
 														<!--end::Menu item-->
 														<!--begin::Menu item-->
 														<div class="menu-item px-3">
-															<a href="account/settings.html" class="menu-link d-flex px-5">
+															<a href="#" class="menu-link d-flex px-5">
 															<span class="symbol symbol-20px me-4">
 																<img class="rounded-1" src="{{  URL::asset('demo1/dist/assets/media/flags/germany.svg') }}" alt="metronic" />
 															</span>German</a>
@@ -1893,7 +1891,7 @@
 														<!--end::Menu item-->
 														<!--begin::Menu item-->
 														<div class="menu-item px-3">
-															<a href="account/settings.html" class="menu-link d-flex px-5">
+															<a href="#" class="menu-link d-flex px-5">
 															<span class="symbol symbol-20px me-4">
 																<img class="rounded-1" src="assets/media/flags/japan.svg" alt="metronic" />
 															</span>Japanese</a>
@@ -1901,7 +1899,7 @@
 														<!--end::Menu item-->
 														<!--begin::Menu item-->
 														<div class="menu-item px-3">
-															<a href="account/settings.html" class="menu-link d-flex px-5">
+															<a href="#" class="menu-link d-flex px-5">
 															<span class="symbol symbol-20px me-4">
 																<img class="rounded-1" src="{{  URL::asset('demo1/dist/assets/media/flags/france.svg') }}" alt="metronic" />
 															</span>French</a>
@@ -1913,12 +1911,16 @@
 												<!--end::Menu item-->
 												<!--begin::Menu item-->
 												<div class="menu-item px-5 my-1">
-													<a href="account/settings.html" class="menu-link px-5">Account Settings</a>
+													<a href="#" class="menu-link px-5">Account Settings</a>
 												</div>
 												<!--end::Menu item-->
 												<!--begin::Menu item-->
 												<div class="menu-item px-5">
-													<a href="authentication/flows/basic/sign-in.html" class="menu-link px-5">Sign Out</a>
+													<a  href="{{ route('logout') }}"
+														onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();" class="menu-link px-5">
+														Sign Out
+													</a>
 												</div>
 												<!--end::Menu item-->
 											</div>
@@ -1962,138 +1964,15 @@
 								<!--begin::Page title-->
 								<div class="d-flex align-items-center me-3">
 									<!--begin::Title-->
-									<h1 class="d-flex align-items-center text-dark fw-bolder my-1 fs-3">Work List</h1>
+									<h1 class="d-flex align-items-center text-dark fw-bolder my-1 fs-3">Work From Home</h1>
 									<!--end::Title-->
 									<!--begin::Separator-->
 									<span class="h-20px border-gray-200 border-start mx-4"></span>
 									<!--end::Separator-->
-									<!--begin::Breadcrumb-->
-									<ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
-										<!--begin::Item-->
-										<li class="breadcrumb-item text-muted">
-											<a href="index.html" class="text-muted text-hover-primary">Home</a>
-										</li>
-										<!--end::Item-->
-										<!--begin::Item-->
-										<li class="breadcrumb-item">
-											<span class="bullet bg-gray-200 w-5px h-2px"></span>
-										</li>
-										<!--end::Item-->
-										<!--begin::Item-->
-										<li class="breadcrumb-item text-muted">Works</li>
-										<!--end::Item-->
-										<!--begin::Item-->
-										<li class="breadcrumb-item">
-											<span class="bullet bg-gray-200 w-5px h-2px"></span>
-										</li>
-										<!--end::Item-->
-										<!--begin::Item-->
-										 
-										<!--end::Item-->
-									</ul>
-									<!--end::Breadcrumb-->
+
 								</div>
 								<!--end::Page title-->
-								<!--begin::Actions-->
-								<div class="d-flex align-items-center py-1">
-									<!--begin::Wrapper-->
-									<div class="me-4">
-										<!--begin::Menu-->
-										<a href="#" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
-										<!--begin::Svg Icon | path: icons/stockholm/Text/Filter.svg-->
-										<span class="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
-											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-													<rect x="0" y="0" width="24" height="24" />
-													<path d="M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z" fill="#000000" />
-												</g>
-											</svg>
-										</span>
-										<!--end::Svg Icon-->Filter</a>
-										<!--begin::Menu 1-->
-										<div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true">
-											<!--begin::Header-->
-											<div class="px-7 py-5">
-												<div class="fs-5 text-dark fw-bolder">Filter Options</div>
-											</div>
-											<!--end::Header-->
-											<!--begin::Menu separator-->
-											<div class="separator border-gray-200"></div>
-											<!--end::Menu separator-->
-											<!--begin::Form-->
-											<div class="px-7 py-5">
-												<!--begin::Input group-->
-												<div class="mb-10">
-													<!--begin::Label-->
-													<label class="form-label fw-bold">Status:</label>
-													<!--end::Label-->
-													<!--begin::Input-->
-													<div>
-														<select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true">
-															<option></option>
-															<option value="1">Approved</option>
-															<option value="2">Pending</option>
-															<option value="2">In Process</option>
-															<option value="2">Rejected</option>
-														</select>
-													</div>
-													<!--end::Input-->
-												</div>
-												<!--end::Input group-->
-												<!--begin::Input group-->
-												<div class="mb-10">
-													<!--begin::Label-->
-													<label class="form-label fw-bold">Member Type:</label>
-													<!--end::Label-->
-													<!--begin::Options-->
-													<div class="d-flex">
-														<!--begin::Options-->
-														<label class="form-check form-check-sm form-check-custom form-check-solid me-5">
-															<input class="form-check-input" type="checkbox" value="1" />
-															<span class="form-check-label">Author</span>
-														</label>
-														<!--end::Options-->
-														<!--begin::Options-->
-														<label class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="2" checked="checked" />
-															<span class="form-check-label">Customer</span>
-														</label>
-														<!--end::Options-->
-													</div>
-													<!--end::Options-->
-												</div>
-												<!--end::Input group-->
-												<!--begin::Input group-->
-												<div class="mb-10">
-													<!--begin::Label-->
-													<label class="form-label fw-bold">Notifications:</label>
-													<!--end::Label-->
-													<!--begin::Switch-->
-													<div class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-														<input class="form-check-input" type="checkbox" value="" name="notifications" checked="checked" />
-														<label class="form-check-label">Enabled</label>
-													</div>
-													<!--end::Switch-->
-												</div>
-												<!--end::Input group-->
-												<!--begin::Actions-->
-												<div class="d-flex justify-content-end">
-													<button type="reset" class="btn btn-sm btn-white btn-active-light-primary me-2" data-kt-menu-dismiss="true">Reset</button>
-													<button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
-												</div>
-												<!--end::Actions-->
-											</div>
-											<!--end::Form-->
-										</div>
-										<!--end::Menu 1-->
-										<!--end::Menu-->
-									</div>
-									<!--end::Wrapper-->
-									<!--begin::Button-->
-									<a  class="btn btn-sm btn-primary"  href="{{ route('tasks.create') }}" >Create</a>
-									<!--end::Button-->
-								</div>
-								<!--end::Actions-->
+
 							</div>
 							<!--end::Container-->
 						</div>
