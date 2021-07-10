@@ -6,6 +6,244 @@ use App\Http\Controllers\TasksController;
 
 @section('content')
 
+
+    @if ($message = Session::get('success'))
+        <div class="alert alert-success">
+            <p>{{ $message }}</p>
+        </div>
+    @endif
+
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bolder fs-3 mb-1">Time Reporting</span>
+        </h3>
+
+
+        <div class="row g-6 g-xl-9">
+            <div class="col-md-6 col-xxl-4">
+                <div class="card" style="border: 1px solid #eaeaea;">
+                    <div class="card-body d-flex flex-center flex-column pt-12 p-9">
+                        <!--begin::Name-->
+                        <a href="#" class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0">Hour Per day</a>
+                        <!--end::Name-->
+
+                        <!--begin::Info-->
+                        <div class="d-flex flex-center flex-wrap">
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">8</div>
+                                <div class="fw-bold text-gray-400">Hrs</div>
+                            </div>
+                            <!--end::Stats-->
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">00</div>
+                                <div class="fw-bold text-gray-400">Min</div>
+                            </div>
+                            <!--end::Stats-->
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">00</div>
+                                <div class="fw-bold text-gray-400">Sec</div>
+                            </div>
+                            <!--end::Stats-->
+                        </div>
+                        <!--end::Info-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xxl-4">
+                <div class="card" style="border: 1px solid #eaeaea;">
+                    <div class="card-body d-flex flex-center flex-column pt-12 p-9">
+                        <!--begin::Name-->
+                        <a href="#" class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0">Loss Hour</a>
+                        <!--end::Name-->
+                    <?php $tmp_loss_hour = explode(':', $loss_hour);?>
+                    <!--begin::Info-->
+                        <div class="d-flex flex-center flex-wrap">
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{$tmp_loss_hour[0]}}</div>
+                                <div class="fw-bold text-gray-400">Hrs</div>
+                            </div>
+                            <!--end::Stats-->
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{$tmp_loss_hour[1]}}</div>
+                                <div class="fw-bold text-gray-400">Min</div>
+                            </div>
+                            <!--end::Stats-->
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{$tmp_loss_hour[2]}}</div>
+                                <div class="fw-bold text-gray-400">Sec</div>
+                            </div>
+                            <!--end::Stats-->
+                        </div>
+
+                        <!--end::Info-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xxl-4">
+                <div class="card" style="border: 1px solid #eaeaea;">
+                    <div class="card-body d-flex flex-center flex-column pt-12 p-9">
+                        <!--begin::Name-->
+                        <a href="#" class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0">Assign Hour</a>
+                        <!--end::Name-->
+                    <?php $tmp_nassigntime = explode(':', $nassigntime);?>
+                    <!--begin::Info-->
+                        <div class="d-flex flex-center flex-wrap">
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{ $tmp_nassigntime[0] }}</div>
+                                <div class="fw-bold text-gray-400">Hrs</div>
+                            </div>
+                            <!--end::Stats-->
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{$tmp_nassigntime[1]}}</div>
+                                <div class="fw-bold text-gray-400">Min</div>
+                            </div>
+                            <!--end::Stats-->
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{$tmp_nassigntime[2]}}</div>
+                                <div class="fw-bold text-gray-400">Sec</div>
+                            </div>
+                            <!--end::Stats-->
+                        </div>
+                        <!--end::Info-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xxl-4">
+                <div class="card" style="border: 1px solid #eaeaea;">
+                    <div class="card-body d-flex flex-center flex-column pt-12 p-9">
+                        <!--begin::Name-->
+                        <a href="#" class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0">Available Hour</a>
+                        <!--end::Name-->
+                    <?php $tmp_available_hour = explode(':', $available_hour);?>
+                    <!--begin::Info-->
+                        <div class="d-flex flex-center flex-wrap">
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{ $tmp_available_hour[0] }}</div>
+                                <div class="fw-bold text-gray-400">Hrs</div>
+                            </div>
+                            <!--end::Stats-->
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{$tmp_available_hour[1]}}</div>
+                                <div class="fw-bold text-gray-400">Min</div>
+                            </div>
+                            <!--end::Stats-->
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{$tmp_available_hour[2]}}</div>
+                                <div class="fw-bold text-gray-400">Sec</div>
+                            </div>
+                            <!--end::Stats-->
+                        </div>
+                        <!--end::Info-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xxl-4">
+                <div class="card" style="border: 1px solid #eaeaea;">
+                    <div class="card-body d-flex flex-center flex-column pt-12 p-9">
+                        <!--begin::Name-->
+                        <a href="#" class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0">Entry time calculation</a>
+                        <!--end::Name-->
+                        <!--begin::Info-->
+                        <div class="d-flex flex-center flex-wrap">
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{ $Entry_time }}</div>
+                                <div class="fw-bold text-gray-400">Hrs</div>
+                            </div>
+                            <!--end::Stats-->
+
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">00</div>
+                                <div class="fw-bold text-gray-400">Min</div>
+                            </div>
+                            <!--end::Stats-->
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">00</div>
+                                <div class="fw-bold text-gray-400">Sec</div>
+                            </div>
+                            <!--end::Stats-->
+                        </div>
+                        <!--end::Info-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xxl-4">
+                <div class="card" style="border: 1px solid #eaeaea;">
+                    <div class="card-body d-flex flex-center flex-column pt-12 p-9">
+                        <!--begin::Name-->
+                        <a href="#" class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0">Idle Time</a>
+                        <!--end::Name-->
+                    <?php $tmp_idle = explode(':', $idle);?>
+                    <!--begin::Info-->
+                        <div class="d-flex flex-center flex-wrap">
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{ $tmp_idle[0] }}</div>
+                                <div class="fw-bold text-gray-400">Hrs</div>
+                            </div>
+                            <!--end::Stats-->
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{$tmp_idle[1]}}</div>
+                                <div class="fw-bold text-gray-400">Min</div>
+                            </div>
+                            <!--end::Stats-->
+                            <!--begin::Stats-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-80px py-3 px-4 mx-2 mb-3"
+                                 style="text-align: center;">
+                                <div class="fs-6 fw-bolder text-gray-700">{{$tmp_idle[2]}}</div>
+                                <div class="fw-bold text-gray-400">Sec</div>
+                            </div>
+                            <!--end::Stats-->
+                        </div>
+                        <!--end::Info-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="separator border-3 my-10"></div>
+
     <div class="card-header border-0 pt-5">
         <h3 class="card-title align-items-start flex-column">
             <span class="card-label fw-bolder fs-3 mb-1">Tasks</span>
@@ -63,37 +301,9 @@ use App\Http\Controllers\TasksController;
     <!-- end  Popup Model -->
 
 
-    @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p>{{ $message }}</p>
-        </div>
-    @endif
 
     <div class="card-body pt-0">
-        <table class="table align-middle table-row-dashed fs-6 gy-5">
-            <thead>
-            <tr>
-                <th>Hour Per day</th>
-                <th>Loss Hour</th>
 
-                <th>Assign Hour</th>
-                <th>Available Hour</th>
-                <th>Entry time calculation</th>
-                <th>Idle</th>
-
-
-            </tr>
-            </thead>
-            <tr>
-
-                <td>{{ '8 hours' }}</td>
-                <td> {{ $loss_hour }}</td>
-                <td>{{ $nassigntime }}</td>
-                <td>{{ $available_hour }}</td>
-                <td>{{ $Entry_time }} min</td>
-                <td>{{ $idle }}</td>
-            </tr>
-        </table>
         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
             <!--begin::Table head-->
             <thead>
@@ -205,7 +415,8 @@ use App\Http\Controllers\TasksController;
                             @csrf
                             @method('DELETE')
 
-                            <button type="submit" title="delete"  class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                            <button type="submit" title="delete"
+                                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
                                 <!--begin::Svg Icon | path: icons/stockholm/General/Trash.svg-->
                                 <span class="svg-icon svg-icon-3">
                                 <svg xmlns="http://www.w3.org/2000/svg"

@@ -125,7 +125,7 @@
 
         $rem_hrs = intdiv($rem_min, 60) . ':' . ($rem_min % 60) . ':00';
 
-        $total_loss_hour = '-';
+        $total_loss_hour = '00:00:00';
         if ($loss_hour != '') {
           $total_loss_hour = $loss_hour;
           if ($rem_hrs != '') {
@@ -210,7 +210,7 @@
         echo '<pre>';print_r($work_done);echo '</pre>';die;*/
 
 
-        $idle = '-';
+        $idle = '00:00:00';
         if ($date_from < $endTime) {
           if ($work_done != '-') {
             $passed_time_time = Carbon::parse($passed_time);
